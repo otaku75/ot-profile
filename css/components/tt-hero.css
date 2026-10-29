@@ -1,15 +1,10 @@
+/* =========================================================
+   共通
+   ========================================================= */
+
 tt-hero {
   display: block;
   position: relative;
-  background-color: var(--palette-charcoal-900);
-}
-
-.tt-hero__media {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  max-height: 75svh;
-  width: 100%;
-  overflow: hidden;
 }
 
 .tt-hero__image {
@@ -17,10 +12,6 @@ tt-hero {
   height: 100%;
   object-fit: cover;
   object-position: var(--tt-hero-focus, center);
-}
-
-.tt-hero__body {
-  padding-block: var(--space-6) var(--space-8);
 }
 
 .tt-hero__content > * {
@@ -39,7 +30,7 @@ tt-hero {
 .tt-hero__eyebrow {
   display: inline-block;
   padding: 0.1em 1em;
-  border: var(--outline-width) solid var(--palette-charcoal-900);
+  border: var(--outline-width) solid var(--color-outline);
   border-radius: var(--radius-pill);
   background-color: var(--color-primary);
   color: var(--color-on-primary);
@@ -52,13 +43,10 @@ tt-hero {
 .tt-hero__heading {
   margin-top: var(--space-4);
   font-family: var(--font-display);
-  font-size: var(--font-size-display);
   font-weight: 700;
   line-height: 0.95;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--palette-white);
-  text-shadow: 0.05em 0.05em 0 var(--palette-green-700);
 }
 
 .tt-hero__subheading {
@@ -69,9 +57,39 @@ tt-hero {
   color: var(--color-text-muted);
 }
 
+@keyframes tt-hero-pop {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.97);
+  }
+}
+
+/* =========================================================
+   既定（全面）: 画像を画面幅いっぱいに表示する
+   ========================================================= */
+
+.tt-hero__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-height: 75svh;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--palette-charcoal-900);
+}
+
+.tt-hero__body {
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.tt-hero__body .tt-hero__heading {
+  font-size: var(--font-size-display);
+  color: var(--palette-white);
+  text-shadow: 0.05em 0.05em 0 var(--palette-green-700);
+}
+
 /* 900px 以上: 画像の上に文字を重ねる */
 @media (min-width: 900px) {
-  tt-hero {
+  tt-hero:not([framed]) {
     height: min(100svh, 66.6vw);
     min-height: 560px;
   }
@@ -100,9 +118,49 @@ tt-hero {
   }
 }
 
-@keyframes tt-hero-pop {
-  from {
-    opacity: 0;
-    transform: translateY(0.75rem) scale(0.97);
+/* =========================================================
+   framed: 枠付きの画像＋左下に重なるネームプレート
+   ========================================================= */
+
+tt-hero[framed] {
+  padding-block: var(--space-2) var(--space-8);
+}
+
+/* width を明示しないと、max-height が aspect-ratio 経由で幅まで縮めてしまう */
+.tt-hero__frame {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: var(--outline-width) solid var(--color-outline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-outline);
+  background-color: var(--color-bg-subtle);
+}
+
+.tt-hero__plate {
+  position: relative;
+  width: fit-content;
+  max-width: calc(100% - var(--space-3));
+  margin: calc(var(--space-8) * -1) 0 0 var(--space-3);
+}
+
+.tt-hero__plate .tt-hero__heading {
+  font-size: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  color: var(--color-text);
+  text-shadow: 0.06em 0.06em 0 var(--color-primary);
+}
+
+.tt-hero__plate .tt-hero__subheading {
+  margin-top: var(--space-3);
+}
+
+@media (min-width: 600px) {
+  .tt-hero__frame {
+    aspect-ratio: 16 / 9;
+    max-height: 64svh; /* ネームプレートまで最初の画面に収める */
+  }
+
+  .tt-hero__plate {
+    margin: calc(var(--space-9) * -1) 0 0 clamp(var(--space-5), 4vw, var(--space-7));
   }
 }

@@ -1,17 +1,14 @@
+/* 既定: 背景を持たず、ページのドット柄の上に置く */
 tt-header {
   display: block;
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: var(--z-header);
-  background-color: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
 }
 
+/* overlay: 全面のヒーロー画像の上に重ねる（白文字） */
 tt-header[overlay] {
   position: absolute;
   inset: 0 0 auto;
-  background-color: transparent;
-  border-bottom-color: transparent;
 }
 
 tt-header[overlay],
