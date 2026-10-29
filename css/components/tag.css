@@ -1,0 +1,13 @@
+/* カテゴリなどの小さなラベル（JS不要のためCSSクラスのみ）
+   <span class="tag">試合予定</span> */
+
+.tag {
+  display: inline-block;
+  padding: 0.1em 0.9em;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-xs);
+  line-height: 1.8;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLAYER NAME | 卓球選手 選手名 公式サイト</title>
+  <meta name="description" content="卓球選手 選手名の公式サイト。プロフィール、戦績、試合予定などを掲載しています。">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+
+  <link rel="preload" as="image" href="assets/images/hero.jpg">
+  <link rel="stylesheet" href="css/main.css">
+  <script type="module" src="js/pages/home.js"></script>
+</head>
+<body>
+  <tt-header overlay></tt-header>
+
+  <main>
+    <tt-hero
+      image="assets/images/hero.jpg"
+      alt="試合中にボールを打つ選手"
+      eyebrow="Table Tennis Player"
+      heading="PLAYER NAME"
+      subheading="選手名"
+      focus="62% 30%"
+    ></tt-hero>
+
+    <section class="section" id="profile">
+      <div class="container">
+        <tt-section-heading en="Profile" ja="プロフィール"></tt-section-heading>
+        <div class="split">
+          <div class="flow">
+            <p>ここに自己紹介文が入ります。卓球を始めたきっかけ、これまでの競技歴、プレースタイルの特徴などを紹介します。</p>
+            <p>現在の活動や今後の目標、応援してくれる方へのメッセージなどを添えると、人柄が伝わるプロフィールになります。</p>
+          </div>
+          <div class="flow" style="--flow-space: var(--space-7)">
+            <tt-fact-list id="profile-facts"></tt-fact-list>
+            <div class="flow" style="--flow-space: var(--space-4)">
+              <h3 class="eyebrow">Equipment</h3>
+              <tt-fact-list id="equipment-facts"></tt-fact-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--muted" id="results">
+      <div class="container">
+        <tt-section-heading en="Results" ja="主な戦績"></tt-section-heading>
+        <tt-result-list id="results-list" limit="5"></tt-result-list>
+      </div>
+    </section>
+
+    <section class="section" id="news">
+      <div class="container">
+        <tt-section-heading en="News" ja="お知らせ・試合予定"></tt-section-heading>
+        <tt-news-list id="news-list" limit="3"></tt-news-list>
+      </div>
+    </section>
+
+    <section class="section theme-dark" id="contact">
+      <div class="container container--narrow text-center flow" style="--flow-space: var(--space-6)">
+        <tt-section-heading en="Contact" ja="お問い合わせ" align="center"></tt-section-heading>
+        <p>取材・イベント出演・スポンサーシップに関するご相談は、下記よりお気軽にご連絡ください。</p>
+        <p><a class="button" href="mailto:info@example.com">メールで問い合わせる</a></p>
+      </div>
+    </section>
+  </main>
+
+  <tt-footer></tt-footer>
+</body>
+</html>

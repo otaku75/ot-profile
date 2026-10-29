@@ -1,0 +1,57 @@
+tt-result-list {
+  display: block;
+}
+
+.tt-result-list__item {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tt-result-list__item:first-child {
+  border-top: 1px solid var(--color-border);
+}
+
+.tt-result-list__year {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.tt-result-list__tournament {
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.tt-result-list__event {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.tt-result-list__result {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tt-result-list__item.is-highlight .tt-result-list__result {
+  color: var(--color-accent-text);
+}
+
+@media (min-width: 600px) {
+  .tt-result-list__item {
+    grid-template-columns: 5rem minmax(0, 1fr) auto;
+    gap: var(--space-6);
+  }
+
+  .tt-result-list__result {
+    font-size: var(--font-size-lg);
+  }
+}

@@ -1,0 +1,99 @@
+tt-hero {
+  display: block;
+  position: relative;
+  background-color: var(--palette-night);
+}
+
+.tt-hero__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-height: 75svh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.tt-hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--tt-hero-focus, center);
+}
+
+.tt-hero__body {
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.tt-hero__content > * {
+  animation: tt-hero-fade-up 0.9s var(--ease) both;
+}
+
+.tt-hero__content > :nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.tt-hero__content > :nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.tt-hero__eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+}
+
+.tt-hero__heading {
+  margin-top: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--font-size-display);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.tt-hero__subheading {
+  margin-top: var(--space-4);
+  font-size: var(--font-size-lg);
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-text-muted);
+}
+
+/* 900px 以上: 画像の上に文字を重ねる */
+@media (min-width: 900px) {
+  tt-hero {
+    height: min(100svh, 66.6vw);
+    min-height: 560px;
+  }
+
+  .tt-hero__media {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    max-height: none;
+  }
+
+  /* 文字の可読性のため左側を少し暗くする */
+  .tt-hero__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(0 0 0 / 0.5) 0%, rgb(0 0 0 / 0) 55%);
+  }
+
+  .tt-hero__body {
+    position: relative;
+    height: 100%;
+    padding: calc(var(--header-height) + clamp(3rem, 12vh, 9rem)) 0 0;
+    background-color: transparent;
+  }
+}
+
+@keyframes tt-hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}

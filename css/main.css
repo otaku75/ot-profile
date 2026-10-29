@@ -1,0 +1,19 @@
+/* 全ページ共通で読み込むCSSのエントリポイント。
+   新しいコンポーネントのCSSを作ったらここに追加する */
+
+@import url("./tokens.css");
+@import url("./base.css");
+@import url("./layout.css");
+
+/* CSSのみの部品 */
+@import url("./components/button.css");
+@import url("./components/tag.css");
+
+/* Custom Elements */
+@import url("./components/tt-header.css");
+@import url("./components/tt-footer.css");
+@import url("./components/tt-hero.css");
+@import url("./components/tt-section-heading.css");
+@import url("./components/tt-fact-list.css");
+@import url("./components/tt-result-list.css");
+@import url("./components/tt-news-list.css");

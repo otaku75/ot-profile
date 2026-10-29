@@ -1,0 +1,85 @@
+/* =========================================================
+   デザイントークン
+   見た目の値はここに集約し、コンポーネント側でハードコードしない
+   ========================================================= */
+
+:root {
+  /* パレット（直接使わず、下のセマンティックカラー経由で使う） */
+  --palette-ink: #16181a;
+  --palette-night: #0e0f10;
+  --palette-white: #ffffff;
+  --palette-gray-50: #f5f6f7;
+  --palette-gray-200: #e3e6e9;
+  --palette-gray-600: #5f6670;
+  --palette-blue-300: #6cc0ef;
+  --palette-blue-500: #1a8fd0; /* 卓球台のブルー */
+  --palette-blue-700: #0b6aa2;
+  --palette-blue-800: #08598a;
+
+  /* セマンティックカラー */
+  --color-bg: var(--palette-white);
+  --color-bg-subtle: var(--palette-gray-50);
+  --color-text: var(--palette-ink);
+  --color-text-muted: var(--palette-gray-600);
+  --color-border: var(--palette-gray-200);
+  --color-accent: var(--palette-blue-500); /* 装飾用（線・アイコンなど） */
+  --color-accent-text: var(--palette-blue-700); /* 文字色として使うアクセント */
+  --color-primary: var(--palette-blue-700);
+  --color-primary-hover: var(--palette-blue-800);
+  --color-on-primary: var(--palette-white);
+
+  /* タイポグラフィ */
+  --font-sans: "Noto Sans JP", system-ui, -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-display: "Barlow Condensed", "Noto Sans JP", sans-serif;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: clamp(2.25rem, 1.75rem + 2vw, 3.25rem);
+  --font-size-display: clamp(3.5rem, 1.5rem + 5vw, 6.5rem);
+
+  --line-height-tight: 1.15;
+  --line-height-base: 1.9;
+  --letter-spacing-wide: 0.12em;
+
+  /* 余白 */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --section-padding: clamp(4.5rem, 3rem + 5vw, 8rem);
+
+  /* レイアウト */
+  --container-width: 1120px;
+  --container-padding: clamp(1.25rem, 5vw, 3rem);
+  --header-height: 4.5rem;
+
+  /* 形状・動き */
+  --radius-pill: 999px;
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --z-header: 100;
+}
+
+/* ダーク配色。セマンティックカラーを上書きするので、
+   トークンを参照しているコンポーネントは自動で追従する */
+.theme-dark {
+  --color-bg: var(--palette-night);
+  --color-bg-subtle: #1a1c1e;
+  --color-text: var(--palette-white);
+  --color-text-muted: rgb(255 255 255 / 0.68);
+  --color-border: rgb(255 255 255 / 0.16);
+  --color-accent-text: var(--palette-blue-300);
+
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
