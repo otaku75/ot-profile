@@ -1,4 +1,4 @@
-/* 写真（JS不要のためCSSクラスのみ）
+/* 写真（JS不要のためCSSクラスのみ）。角丸・輪郭線・影つきの枠で表示する
    <img class="photo" src="..." alt="..." width="..." height="...">
    トリミングしたい場合は style="--photo-ratio: 4 / 5; --photo-focus: 50% 20%" のように指定する */
 
@@ -8,5 +8,8 @@
   aspect-ratio: var(--photo-ratio, auto);
   object-fit: cover;
   object-position: var(--photo-focus, center);
+  border: var(--outline-width) solid var(--color-outline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-outline);
   background-color: var(--color-bg-subtle);
 }

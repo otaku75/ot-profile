@@ -1,0 +1,11 @@
+/* ゲームのウィンドウ風の面（JS不要のためCSSクラスのみ）。
+   ドット柄の背景から内容を浮かせて読みやすくする
+   <div class="panel">...</div> */
+
+.panel {
+  padding: var(--space-5) clamp(var(--space-5), 4vw, var(--space-7));
+  border: var(--outline-width) solid var(--color-outline);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-outline);
+}

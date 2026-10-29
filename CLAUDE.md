@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-卓球選手のWebサイト兼ポートフォリオ。素のHTML / CSS / JavaScriptのみで作り、フレームワーク・ビルドツール・npm依存は導入しない（導入する場合は事前にユーザーに確認する）。外部依存は Google Fonts（Barlow Condensed / Noto Sans JP）のみ。
+卓球選手のWebサイト兼ポートフォリオ。素のHTML / CSS / JavaScriptのみで作り、フレームワーク・ビルドツール・npm依存は導入しない（導入する場合は事前にユーザーに確認する）。外部依存は Google Fonts（Fredoka / Zen Maru Gothic）のみ。
 
-- デザインはシンプル寄り。装飾より余白・タイポグラフィ・整列を優先する。
+- デザインはシンプル寄りをベースに、ユーザーの好みである「丸いドット柄の背景」「ゲームっぽさ」「柔らかいグリーン系」で個性を出す。
 - UI部品はコンポーネント化し、複数ページ・複数箇所で再利用できるようにする。
 
 ## 開発コマンド
@@ -42,6 +42,8 @@ python3 -m http.server 8000   # http://localhost:8000
 - `css/main.css` が `@import` で tokens → base → layout → components の順に読み込む。
 - 色・余白・フォントサイズなどは `css/tokens.css` のカスタムプロパティを使う。色はセマンティックトークン（`--color-text`, `--color-border` など）経由で指定する。
 - ダーク配色は `.theme-dark` クラスがセマンティックトークンを上書きする仕組み。コンポーネントがトークン経由で色を指定していれば、暗いセクション内でも自動で追従する。
+- 写真以外の背景はドット柄にする。`css/base.css` で `body` / `.section--muted` / `.theme-dark` に敷いているので、背景色を持つ面を新しく作るときは同じ柄を敷き、写真の上では `background: none` で消す（`tt-hero` 参照）。
+- ゲーム風の見た目は、太い輪郭線（`--outline-width`）とずらした影（`--shadow-offset`）の組み合わせで統一する（`.panel`, `.button`, `.photo`）。
 - クラス名はタグ名をブロックにした BEM（`.tt-header__nav`）。状態はホストの属性（`tt-header[menu-open]`）か `is-*` クラスで表す。
 - レイアウト用ユーティリティ（`.container`, `.section`, `.split`, `.flow` など）は `css/layout.css`。
 - ブレークポイントは 600px / 900px（モバイルファースト、`min-width`）。

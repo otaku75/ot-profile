@@ -9,6 +9,7 @@
 @import url("./components/button.css");
 @import url("./components/tag.css");
 @import url("./components/photo.css");
+@import url("./components/panel.css");
 
 /* Custom Elements */
 @import url("./components/tt-header.css");

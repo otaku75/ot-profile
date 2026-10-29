@@ -1,8 +1,10 @@
 tt-result-list {
   display: block;
+
+  --line-width: 4px;
 }
 
-/* モバイル: 年 → その下に縦線つきの一覧 */
+/* モバイル: 年 → その下に点線つきの一覧 */
 .tt-result-list__group + .tt-result-list__group {
   margin-top: var(--space-6);
 }
@@ -11,50 +13,55 @@ tt-result-list {
   margin-bottom: var(--space-3);
   font-family: var(--font-display);
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: 0.02em;
 }
 
+/* 時系列の線は丸いドットの点線 */
 .tt-result-list__entries {
-  border-left: 1px solid var(--color-border-strong);
+  border-left: var(--line-width) dotted var(--color-border-strong);
 }
 
 .tt-result-list__entry {
-  --dot-size: 9px;
-  --dot-top: calc(var(--space-3) + 0.7rem);
+  --dot-size: 16px;
+  --dot-top: calc(var(--space-3) + 0.85rem);
 
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
   grid-template-areas:
     "date result"
-    "body result";
+    "body body";
   align-items: center;
-  column-gap: var(--space-4);
+  gap: var(--space-2) var(--space-3);
   padding: var(--space-3) 0 var(--space-3) var(--space-5);
 }
 
-/* 縦線上のドット */
+/* 線上のコイン */
 .tt-result-list__entry::before {
   content: "";
   position: absolute;
   top: calc(var(--dot-top) - var(--dot-size) / 2);
-  left: calc(var(--dot-size) / -2 - 0.5px);
+  left: calc(var(--line-width) / -2 - var(--dot-size) / 2);
   width: var(--dot-size);
   height: var(--dot-size);
+  border: 3px solid var(--color-border-strong);
   border-radius: 50%;
-  background-color: var(--color-border-strong);
+  background-color: var(--color-surface);
 }
 
 .tt-result-list__entry.is-highlight::before {
-  --dot-size: 13px;
-  background-color: var(--color-accent);
+  --dot-size: 22px;
+  border-color: var(--color-outline);
+  background-color: var(--color-highlight);
+  box-shadow: inset -3px -3px 0 rgb(0 0 0 / 0.14);
 }
 
 .tt-result-list__date {
   grid-area: date;
   font-family: var(--font-display);
+  font-size: var(--font-size-lg);
   font-weight: 600;
   line-height: 1.4;
   letter-spacing: 0.04em;
@@ -66,7 +73,7 @@ tt-result-list {
 }
 
 .tt-result-list__tournament {
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.6;
 }
 
@@ -76,29 +83,33 @@ tt-result-list {
   color: var(--color-text-muted);
 }
 
+/* 結果はバッジ風。優勝などは金色 */
 .tt-result-list__result {
   grid-area: result;
+  justify-self: start;
+  padding: 0.1em 0.9em;
+  border: 2px solid var(--color-outline);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-subtle);
+  font-size: var(--font-size-sm);
   font-weight: 700;
-  white-space: nowrap;
+  line-height: 1.7;
+  text-align: center;
 }
 
 .tt-result-list__entry.is-highlight .tt-result-list__result {
-  color: var(--color-accent-text);
+  background-color: var(--color-highlight);
 }
 
-/* 600px 以上: 左に年、右に1本の縦線でつながる一覧 */
+/* 600px 以上: 左に年、右に1本の点線でつながる一覧 */
 @media (min-width: 600px) {
   .tt-result-list__group {
     display: grid;
-    grid-template-columns: 6rem minmax(0, 1fr);
+    grid-template-columns: 7rem minmax(0, 1fr);
   }
 
   .tt-result-list__group + .tt-result-list__group {
     margin-top: 0;
-  }
-
-  .tt-result-list__groups {
-    max-width: 52rem;
   }
 
   .tt-result-list__year {
@@ -107,26 +118,22 @@ tt-result-list {
     font-size: 2.25rem;
   }
 
-  /* 年の区切りは縦線の内側の余白で作り、線を途切れさせない */
+  /* 年の区切りは点線の内側の余白で作り、線を途切れさせない */
   .tt-result-list__group:not(:last-child) .tt-result-list__entries {
-    padding-bottom: var(--space-7);
+    padding-bottom: var(--space-6);
   }
 
   .tt-result-list__entry {
-    --dot-top: calc(var(--space-4) + 0.8rem);
+    --dot-top: calc(var(--space-4) + 0.85rem);
 
-    grid-template-columns: 4rem minmax(0, 1fr) auto;
-    grid-template-areas: "date body result";
+    grid-template-columns: 3.5rem 6.5rem minmax(0, 1fr);
+    grid-template-areas: "date result body";
     align-items: baseline;
     column-gap: var(--space-5);
     padding: var(--space-4) 0 var(--space-4) var(--space-6);
   }
 
-  .tt-result-list__date {
-    font-size: var(--font-size-lg);
-  }
-
   .tt-result-list__result {
-    font-size: var(--font-size-lg);
+    justify-self: stretch;
   }
 }

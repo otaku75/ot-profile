@@ -5,34 +5,40 @@
 
 :root {
   /* パレット（直接使わず、下のセマンティックカラー経由で使う） */
-  --palette-ink: #16181a;
-  --palette-night: #0e0f10;
+  --palette-ink: #24342b;
   --palette-white: #ffffff;
-  --palette-gray-50: #f5f6f7;
-  --palette-gray-200: #e3e6e9;
-  --palette-gray-400: #b4bac1;
-  --palette-gray-600: #5f6670;
-  --palette-blue-300: #6cc0ef;
-  --palette-blue-500: #1a8fd0; /* 卓球台のブルー */
-  --palette-blue-700: #0b6aa2;
-  --palette-blue-800: #08598a;
+  --palette-moss-600: #5b6b62;
+  --palette-gray-50: #f5f6f6;
+  --palette-gray-100: #eceeee;
+  --palette-charcoal-800: #242729;
+  --palette-charcoal-900: #17191a;
+  --palette-green-200: #cfe6c5;
+  --palette-green-300: #a6d79c;
+  --palette-green-400: #84c47a;
+  --palette-green-700: #337a45;
+  --palette-gold: #f4c84a;
 
-  /* セマンティックカラー */
+  /* セマンティックカラー。背景色はグリーンを入れずニュートラルにする
+     （グリーンはボタン・バッジ・線などのアクセントに使う） */
   --color-bg: var(--palette-white);
   --color-bg-subtle: var(--palette-gray-50);
+  --color-surface: var(--palette-white); /* パネルなど背景から浮かせる面 */
   --color-text: var(--palette-ink);
-  --color-text-muted: var(--palette-gray-600);
-  --color-border: var(--palette-gray-200);
-  --color-border-strong: var(--palette-gray-400);
-  --color-accent: var(--palette-blue-500); /* 装飾用（線・アイコンなど） */
-  --color-accent-text: var(--palette-blue-700); /* 文字色として使うアクセント */
-  --color-primary: var(--palette-blue-700);
-  --color-primary-hover: var(--palette-blue-800);
-  --color-on-primary: var(--palette-white);
+  --color-text-muted: var(--palette-moss-600);
+  --color-border: var(--palette-green-200);
+  --color-border-strong: var(--palette-green-300);
+  --color-outline: var(--palette-ink); /* パネル・ボタンの太い輪郭線と影 */
+  --color-accent: var(--palette-green-400); /* 装飾用（線・アイコンなど） */
+  --color-accent-text: var(--palette-green-700); /* 文字色として使うアクセント */
+  --color-highlight: var(--palette-gold); /* 優勝などの特別な強調 */
+  --color-primary: var(--palette-green-300);
+  --color-primary-hover: var(--palette-green-400);
+  --color-on-primary: var(--palette-ink);
+  --color-dot: rgb(36 39 41 / 0.09); /* 背景のドット柄 */
 
   /* タイポグラフィ */
-  --font-sans: "Noto Sans JP", system-ui, -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif;
-  --font-display: "Barlow Condensed", "Noto Sans JP", sans-serif;
+  --font-sans: "Zen Maru Gothic", system-ui, -apple-system, "Hiragino Maru Gothic ProN", sans-serif;
+  --font-display: "Fredoka", "Zen Maru Gothic", sans-serif;
 
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
@@ -40,7 +46,7 @@
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.5rem;
   --font-size-2xl: clamp(2.25rem, 1.75rem + 2vw, 3.25rem);
-  --font-size-display: clamp(3.5rem, 1.5rem + 5vw, 6.5rem);
+  --font-size-display: clamp(3rem, 1.5rem + 4.5vw, 5.75rem);
 
   --line-height-tight: 1.15;
   --line-height-base: 1.9;
@@ -63,8 +69,18 @@
   --container-padding: clamp(1.25rem, 5vw, 3rem);
   --header-height: 4.5rem;
 
-  /* 形状・動き */
+  /* 形状 */
+  --radius-md: 16px;
+  --radius-lg: 24px;
   --radius-pill: 999px;
+  --outline-width: 3px;
+  --shadow-offset: 6px;
+
+  /* ドット柄 */
+  --dot-radius: 2.5px;
+  --dot-gap: 24px;
+
+  /* 動き */
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -75,13 +91,16 @@
 /* ダーク配色。セマンティックカラーを上書きするので、
    トークンを参照しているコンポーネントは自動で追従する */
 .theme-dark {
-  --color-bg: var(--palette-night);
-  --color-bg-subtle: #1a1c1e;
-  --color-text: var(--palette-white);
-  --color-text-muted: rgb(255 255 255 / 0.68);
+  --color-bg: var(--palette-charcoal-800);
+  --color-bg-subtle: var(--palette-charcoal-900);
+  --color-surface: var(--palette-charcoal-900);
+  --color-text: var(--palette-gray-50);
+  --color-text-muted: rgb(255 255 255 / 0.72);
   --color-border: rgb(255 255 255 / 0.16);
   --color-border-strong: rgb(255 255 255 / 0.4);
-  --color-accent-text: var(--palette-blue-300);
+  --color-outline: var(--palette-charcoal-900);
+  --color-accent-text: var(--palette-green-300);
+  --color-dot: rgb(255 255 255 / 0.07);
 
   background-color: var(--color-bg);
   color: var(--color-text);

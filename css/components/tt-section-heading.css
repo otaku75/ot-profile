@@ -10,21 +10,31 @@ tt-section-heading[align="center"] {
 .tt-section-heading__title {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-3);
+}
+
+tt-section-heading[align="center"] .tt-section-heading__title {
+  align-items: center;
 }
 
 .tt-section-heading__en {
   font-family: var(--font-display);
   font-size: var(--font-size-2xl);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
+/* 日本語の小見出しはバッジ風 */
 .tt-section-heading__ja {
+  padding: 0.1em 0.9em;
+  border: 2px solid var(--color-outline);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
   font-size: var(--font-size-sm);
-  font-weight: 500;
-  letter-spacing: var(--letter-spacing-wide);
-  color: var(--color-text-muted);
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }

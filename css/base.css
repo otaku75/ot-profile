@@ -25,10 +25,24 @@ html {
 body {
   font-family: var(--font-sans);
   font-size: var(--font-size-md);
+  font-weight: 500;
   line-height: var(--line-height-base);
   color: var(--color-text);
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
+}
+
+/* 写真以外の背景はドット柄にする。
+   背景色を持つ要素（.section--muted / .theme-dark）にも同じ柄を敷く */
+body,
+.section--muted,
+.theme-dark {
+  background-image: radial-gradient(
+    circle,
+    var(--color-dot) var(--dot-radius),
+    transparent calc(var(--dot-radius) + 0.5px)
+  );
+  background-size: var(--dot-gap) var(--dot-gap);
 }
 
 body.is-scroll-locked {
@@ -82,9 +96,9 @@ button {
   font-family: var(--font-display);
   font-size: var(--font-size-sm);
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-accent-text);
 }
 
 .visually-hidden {

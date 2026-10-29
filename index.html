@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
 
   <link rel="preload" as="image" href="assets/images/hero.jpg">
   <link rel="stylesheet" href="css/main.css">
@@ -35,10 +35,15 @@
               <p>ここに自己紹介文が入ります。卓球を始めたきっかけ、これまでの競技歴、プレースタイルの特徴などを紹介します。</p>
               <p>現在の活動や今後の目標、応援してくれる方へのメッセージなどを添えると、人柄が伝わるプロフィールになります。</p>
             </div>
-            <tt-fact-list id="profile-facts"></tt-fact-list>
-            <div class="flow flow--sm">
-              <h3 class="eyebrow">Equipment</h3>
-              <tt-fact-list id="equipment-facts"></tt-fact-list>
+            <div class="panel flow flow--md">
+              <div class="flow flow--sm">
+                <h3 class="eyebrow">Status</h3>
+                <tt-fact-list id="profile-facts"></tt-fact-list>
+              </div>
+              <div class="flow flow--sm">
+                <h3 class="eyebrow">Equipment</h3>
+                <tt-fact-list id="equipment-facts"></tt-fact-list>
+              </div>
             </div>
           </div>
         </div>
@@ -48,14 +53,18 @@
     <section class="section section--muted" id="results">
       <div class="container">
         <tt-section-heading en="Results" ja="主な戦績"></tt-section-heading>
-        <tt-result-list id="results-list" limit="5"></tt-result-list>
+        <div class="panel">
+          <tt-result-list id="results-list" limit="5"></tt-result-list>
+        </div>
       </div>
     </section>
 
     <section class="section" id="news">
       <div class="container">
         <tt-section-heading en="News" ja="お知らせ・試合予定"></tt-section-heading>
-        <tt-news-list id="news-list" limit="3"></tt-news-list>
+        <div class="panel">
+          <tt-news-list id="news-list" limit="3"></tt-news-list>
+        </div>
       </div>
     </section>
 

@@ -1,7 +1,7 @@
 tt-hero {
   display: block;
   position: relative;
-  background-color: var(--palette-night);
+  background-color: var(--palette-charcoal-900);
 }
 
 .tt-hero__media {
@@ -24,7 +24,7 @@ tt-hero {
 }
 
 .tt-hero__content > * {
-  animation: tt-hero-fade-up 0.9s var(--ease) both;
+  animation: tt-hero-pop 0.7s var(--ease) both;
 }
 
 .tt-hero__content > :nth-child(2) {
@@ -35,28 +35,36 @@ tt-hero {
   animation-delay: 0.2s;
 }
 
+/* 見出し上のラベルはゲームのバッジ風 */
 .tt-hero__eyebrow {
-  font-family: var(--font-display);
+  display: inline-block;
+  padding: 0.1em 1em;
+  border: var(--outline-width) solid var(--palette-charcoal-900);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
   font-size: var(--font-size-sm);
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--color-accent-text);
+  font-weight: 700;
+  letter-spacing: 0.12em;
 }
 
+/* 見出しはゲームタイトル風に、ずらした影をつける */
 .tt-hero__heading {
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
   font-family: var(--font-display);
   font-size: var(--font-size-display);
   font-weight: 700;
-  line-height: 0.92;
-  letter-spacing: 0.01em;
+  line-height: 0.95;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
+  color: var(--palette-white);
+  text-shadow: 0.05em 0.05em 0 var(--palette-green-700);
 }
 
 .tt-hero__subheading {
   margin-top: var(--space-4);
   font-size: var(--font-size-lg);
+  font-weight: 700;
   letter-spacing: var(--letter-spacing-wide);
   color: var(--color-text-muted);
 }
@@ -80,20 +88,21 @@ tt-hero {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgb(0 0 0 / 0.5) 0%, rgb(0 0 0 / 0) 55%);
+    background: linear-gradient(90deg, rgb(23 25 26 / 0.55) 0%, rgb(23 25 26 / 0) 55%);
   }
 
+  /* 写真の上なのでドット柄（.theme-dark の背景）は敷かない */
   .tt-hero__body {
     position: relative;
     height: 100%;
     padding: calc(var(--header-height) + clamp(3rem, 12vh, 9rem)) 0 0;
-    background-color: transparent;
+    background: none;
   }
 }
 
-@keyframes tt-hero-fade-up {
+@keyframes tt-hero-pop {
   from {
     opacity: 0;
-    transform: translateY(1rem);
+    transform: translateY(0.75rem) scale(0.97);
   }
 }

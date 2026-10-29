@@ -60,7 +60,7 @@ class TtHeader extends BaseElement {
           <span class="visually-hidden">メニュー</span>
           <span class="tt-header__toggle-icon" aria-hidden="true"></span>
         </button>
-        <nav class="tt-header__nav" id="global-nav" aria-label="グローバルナビゲーション">
+        <nav class="tt-header__nav theme-dark" id="global-nav" aria-label="グローバルナビゲーション">
           <ul class="tt-header__nav-list">
             ${site.nav.map((item) => html`<li><a href="${item.href}">${item.label}</a></li>`)}
           </ul>
