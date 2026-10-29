@@ -3,8 +3,8 @@
 
 export const site = {
   name: {
-    ja: '選手名',
-    en: 'PLAYER NAME',
+    ja: '太田　輝',
+    en: 'Hikaru Ota',
   },
   nav: [
     { label: 'Profile', href: '#profile' },

@@ -1,0 +1,12 @@
+/* 写真（JS不要のためCSSクラスのみ）
+   <img class="photo" src="..." alt="..." width="..." height="...">
+   トリミングしたい場合は style="--photo-ratio: 4 / 5; --photo-focus: 50% 20%" のように指定する */
+
+.photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--photo-ratio, auto);
+  object-fit: cover;
+  object-position: var(--photo-focus, center);
+  background-color: var(--color-bg-subtle);
+}

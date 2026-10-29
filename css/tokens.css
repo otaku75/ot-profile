@@ -10,6 +10,7 @@
   --palette-white: #ffffff;
   --palette-gray-50: #f5f6f7;
   --palette-gray-200: #e3e6e9;
+  --palette-gray-400: #b4bac1;
   --palette-gray-600: #5f6670;
   --palette-blue-300: #6cc0ef;
   --palette-blue-500: #1a8fd0; /* 卓球台のブルー */
@@ -22,6 +23,7 @@
   --color-text: var(--palette-ink);
   --color-text-muted: var(--palette-gray-600);
   --color-border: var(--palette-gray-200);
+  --color-border-strong: var(--palette-gray-400);
   --color-accent: var(--palette-blue-500); /* 装飾用（線・アイコンなど） */
   --color-accent-text: var(--palette-blue-700); /* 文字色として使うアクセント */
   --color-primary: var(--palette-blue-700);
@@ -78,6 +80,7 @@
   --color-text: var(--palette-white);
   --color-text-muted: rgb(255 255 255 / 0.68);
   --color-border: rgb(255 255 255 / 0.16);
+  --color-border-strong: rgb(255 255 255 / 0.4);
   --color-accent-text: var(--palette-blue-300);
 
   background-color: var(--color-bg);

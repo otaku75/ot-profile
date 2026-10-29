@@ -8,6 +8,7 @@
 /* CSSのみの部品 */
 @import url("./components/button.css");
 @import url("./components/tag.css");
+@import url("./components/photo.css");
 
 /* Custom Elements */
 @import url("./components/tt-header.css");

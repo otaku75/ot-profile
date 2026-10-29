@@ -1,44 +1,42 @@
 <!doctype html>
 <html lang="ja">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PLAYER NAME | 卓球選手 選手名 公式サイト</title>
+  <title>Hikaruのポートフォリオ</title>
   <meta name="description" content="卓球選手 選手名の公式サイト。プロフィール、戦績、試合予定などを掲載しています。">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
 
   <link rel="preload" as="image" href="assets/images/hero.jpg">
   <link rel="stylesheet" href="css/main.css">
   <script type="module" src="js/pages/home.js"></script>
 </head>
+
 <body>
   <tt-header overlay></tt-header>
 
   <main>
-    <tt-hero
-      image="assets/images/hero.jpg"
-      alt="試合中にボールを打つ選手"
-      eyebrow="Table Tennis Player"
-      heading="PLAYER NAME"
-      subheading="選手名"
-      focus="62% 30%"
-    ></tt-hero>
+    <tt-hero image="assets/images/hero.jpg" alt="試合中にボールを打つ選手" eyebrow="一般プレーヤー" heading="HIKARU OTA" subheading="太田輝"
+      focus="62% 30%"></tt-hero>
 
     <section class="section" id="profile">
       <div class="container">
         <tt-section-heading en="Profile" ja="プロフィール"></tt-section-heading>
-        <div class="split">
-          <div class="flow">
-            <p>ここに自己紹介文が入ります。卓球を始めたきっかけ、これまでの競技歴、プレースタイルの特徴などを紹介します。</p>
-            <p>現在の活動や今後の目標、応援してくれる方へのメッセージなどを添えると、人柄が伝わるプロフィールになります。</p>
-          </div>
-          <div class="flow" style="--flow-space: var(--space-7)">
+        <div class="split split--media">
+          <img class="photo" src="assets/images/profile.jpg" alt="ユニフォーム姿で立つ太田輝" width="1365" height="2048" loading="lazy">
+          <div class="flow flow--lg">
+            <div class="flow">
+              <p>ここに自己紹介文が入ります。卓球を始めたきっかけ、これまでの競技歴、プレースタイルの特徴などを紹介します。</p>
+              <p>現在の活動や今後の目標、応援してくれる方へのメッセージなどを添えると、人柄が伝わるプロフィールになります。</p>
+            </div>
             <tt-fact-list id="profile-facts"></tt-fact-list>
-            <div class="flow" style="--flow-space: var(--space-4)">
+            <div class="flow flow--sm">
               <h3 class="eyebrow">Equipment</h3>
               <tt-fact-list id="equipment-facts"></tt-fact-list>
             </div>
@@ -62,7 +60,7 @@
     </section>
 
     <section class="section theme-dark" id="contact">
-      <div class="container container--narrow text-center flow" style="--flow-space: var(--space-6)">
+      <div class="container container--narrow text-center flow flow--md">
         <tt-section-heading en="Contact" ja="お問い合わせ" align="center"></tt-section-heading>
         <p>取材・イベント出演・スポンサーシップに関するご相談は、下記よりお気軽にご連絡ください。</p>
         <p><a class="button" href="mailto:info@example.com">メールで問い合わせる</a></p>
@@ -72,4 +70,5 @@
 
   <tt-footer></tt-footer>
 </body>
+
 </html>

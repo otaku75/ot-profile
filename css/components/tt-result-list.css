@@ -2,25 +2,67 @@ tt-result-list {
   display: block;
 }
 
-.tt-result-list__item {
-  display: grid;
-  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: var(--space-4);
-  padding-block: var(--space-5);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.tt-result-list__item:first-child {
-  border-top: 1px solid var(--color-border);
+/* モバイル: 年 → その下に縦線つきの一覧 */
+.tt-result-list__group + .tt-result-list__group {
+  margin-top: var(--space-6);
 }
 
 .tt-result-list__year {
+  margin-bottom: var(--space-3);
   font-family: var(--font-display);
-  font-size: var(--font-size-lg);
+  font-size: 2rem;
   font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.tt-result-list__entries {
+  border-left: 1px solid var(--color-border-strong);
+}
+
+.tt-result-list__entry {
+  --dot-size: 9px;
+  --dot-top: calc(var(--space-3) + 0.7rem);
+
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "date result"
+    "body result";
+  align-items: center;
+  column-gap: var(--space-4);
+  padding: var(--space-3) 0 var(--space-3) var(--space-5);
+}
+
+/* 縦線上のドット */
+.tt-result-list__entry::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--dot-top) - var(--dot-size) / 2);
+  left: calc(var(--dot-size) / -2 - 0.5px);
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  background-color: var(--color-border-strong);
+}
+
+.tt-result-list__entry.is-highlight::before {
+  --dot-size: 13px;
+  background-color: var(--color-accent);
+}
+
+.tt-result-list__date {
+  grid-area: date;
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.4;
   letter-spacing: 0.04em;
   color: var(--color-text-muted);
+}
+
+.tt-result-list__body {
+  grid-area: body;
 }
 
 .tt-result-list__tournament {
@@ -29,26 +71,59 @@ tt-result-list {
 }
 
 .tt-result-list__event {
-  display: block;
-  margin-top: var(--space-1);
   font-size: var(--font-size-sm);
-  font-weight: 400;
+  line-height: 1.6;
   color: var(--color-text-muted);
 }
 
 .tt-result-list__result {
+  grid-area: result;
   font-weight: 700;
   white-space: nowrap;
 }
 
-.tt-result-list__item.is-highlight .tt-result-list__result {
+.tt-result-list__entry.is-highlight .tt-result-list__result {
   color: var(--color-accent-text);
 }
 
+/* 600px 以上: 左に年、右に1本の縦線でつながる一覧 */
 @media (min-width: 600px) {
-  .tt-result-list__item {
-    grid-template-columns: 5rem minmax(0, 1fr) auto;
-    gap: var(--space-6);
+  .tt-result-list__group {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr);
+  }
+
+  .tt-result-list__group + .tt-result-list__group {
+    margin-top: 0;
+  }
+
+  .tt-result-list__groups {
+    max-width: 52rem;
+  }
+
+  .tt-result-list__year {
+    margin-bottom: 0;
+    padding-top: var(--space-4);
+    font-size: 2.25rem;
+  }
+
+  /* 年の区切りは縦線の内側の余白で作り、線を途切れさせない */
+  .tt-result-list__group:not(:last-child) .tt-result-list__entries {
+    padding-bottom: var(--space-7);
+  }
+
+  .tt-result-list__entry {
+    --dot-top: calc(var(--space-4) + 0.8rem);
+
+    grid-template-columns: 4rem minmax(0, 1fr) auto;
+    grid-template-areas: "date body result";
+    align-items: baseline;
+    column-gap: var(--space-5);
+    padding: var(--space-4) 0 var(--space-4) var(--space-6);
+  }
+
+  .tt-result-list__date {
+    font-size: var(--font-size-lg);
   }
 
   .tt-result-list__result {
