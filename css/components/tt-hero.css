@@ -123,7 +123,7 @@ tt-hero {
    ========================================================= */
 
 tt-hero[framed] {
-  padding-block: var(--space-2) var(--space-8);
+  padding-block: var(--space-2) var(--space-6);
 }
 
 /* width を明示しないと、max-height が aspect-ratio 経由で幅まで縮めてしまう */
@@ -157,7 +157,7 @@ tt-hero[framed] {
 @media (min-width: 600px) {
   .tt-hero__frame {
     aspect-ratio: 16 / 9;
-    max-height: 64svh; /* ネームプレートまで最初の画面に収める */
+    max-height: 54svh; /* ネームプレートと、その下のメニューまで最初の画面に収める */
   }
 
   .tt-hero__plate {

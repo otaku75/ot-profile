@@ -1,0 +1,22 @@
+tt-page-header {
+  display: block;
+}
+
+.tt-page-header__back {
+  margin-bottom: var(--space-6);
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+}
+
+/* 左向きの三角 */
+.tt-page-header__arrow {
+  width: 0.55rem;
+  height: 0.65rem;
+  background-color: currentColor;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+.tt-page-header__back:hover .tt-page-header__arrow {
+  transform: translateX(-3px);
+}

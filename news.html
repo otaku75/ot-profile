@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>お知らせ | Hikaruのポートフォリオ</title>
+  <meta name="description" content="太田輝のお知らせと試合予定です。">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+
+  <link rel="stylesheet" href="css/main.css">
+  <script type="module" src="js/pages/news.js"></script>
+</head>
+
+<body>
+  <tt-header></tt-header>
+
+  <main>
+    <section class="section section--page-top" id="news">
+      <div class="container">
+        <tt-page-header en="News" ja="お知らせ・試合予定"></tt-page-header>
+        <div class="panel">
+          <tt-news-list id="news-list"></tt-news-list>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <tt-footer></tt-footer>
+</body>
+
+</html>

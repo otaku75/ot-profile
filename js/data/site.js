@@ -6,12 +6,14 @@ export const site = {
     ja: '太田　輝',
     en: 'Hikaru Ota',
   },
-  // 下層ページは 'profile.html'、トップページ内のセクションは './#results' のように書く
+  // ヘッダーのナビと、トップページのメニュー（tt-menu）の両方で使う
+  // id … トップページで最新情報のプレビューを差し込むときの目印
+  // description … メニューに表示する説明（最新情報のプレビューがない項目に使う）
   nav: [
-    { label: 'Profile', href: 'profile.html' },
-    { label: 'Results', href: './#results' },
-    { label: 'News', href: './#news' },
-    { label: 'Contact', href: './#contact' },
+    { id: 'profile', label: 'Profile', ja: 'プロフィール', href: 'profile.html', description: '能力値・そうび・卓球歴' },
+    { id: 'results', label: 'Results', ja: '戦績', href: 'results.html', description: 'これまでの戦績' },
+    { id: 'news', label: 'News', ja: 'お知らせ', href: 'news.html', description: 'お知らせ・試合予定' },
+    { id: 'contact', label: 'Contact', ja: 'お問い合わせ', href: 'contact.html', description: '取材・出演のご相談はこちら' },
   ],
   social: [
     { label: 'Instagram', url: '#' },

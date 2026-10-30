@@ -5,6 +5,7 @@ tt-header {
   position: sticky;
   top: 0;
   z-index: var(--z-header);
+  view-transition-name: site-header; /* ページ移動の演出中も動かさない */
 
   /* 浮いたバーがロゴ・ナビより左右にはみ出す幅（画面端に付かないよう余白の内側に収める） */
   --bar-bleed: min(var(--space-5), var(--container-padding) - var(--space-2));

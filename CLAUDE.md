@@ -23,10 +23,12 @@ python3 -m http.server 8000   # http://localhost:8000
 
 ### ページの組み立て
 
-- ページはルート直下のHTML（`index.html` トップ / `profile.html` プロフィール）。各ページは `css/main.css`（全共通CSSのエントリ）と、ページ用スクリプト `js/pages/<page>.js` を1つずつ読み込む。
+- 縦に長い1ページではなく、ゲームのメニュー画面のようにボタンで画面を移動する構成。トップ（`index.html`）はヒーロー＋メニュー（`tt-menu`）だけのタイトル画面で、内容は下層ページ（`profile.html` / `results.html` / `news.html` / `contact.html`）に分ける。下層ページは先頭に `tt-page-header`（メニューへ戻るボタン＋h1）を置く。
+- ページ移動の演出は `css/base.css` の View Transitions（`@view-transition`）で CSS だけで行う。固定ヘッダーは `view-transition-name` で演出から外している。
+- ページはルート直下のHTML。各ページは `css/main.css`（全共通CSSのエントリ）と、ページ用スクリプト `js/pages/<page>.js` を1つずつ読み込む。
 - ページ用スクリプトは最初に `js/components/index.js`（全コンポーネントの登録）を import し、その後 `js/data/` のデータを各コンポーネントの `data` プロパティに代入する。import 順により define 済みの要素に代入されることが前提なので、この順序を崩さない。
-- ヘッダー・フッターは `js/data/site.js`（選手名・ナビ・SNS）を直接参照する。ナビの href は下層ページなら `profile.html`、トップページ内のセクションなら `./#results` の形で書く（どのページからでもトップのセクションへ飛べるように）。`tt-header` はハッシュのないリンクが現在のページと一致すると `aria-current="page"` を付ける。
-- 同じデータを複数ページで使う（例: `js/data/profile.js` はトップとプロフィールの両方）。形が合わない場合はデータを複製せず、ページ用スクリプトで変換して渡す（`home.js` の用具一覧を参照）。
+- ヘッダー・フッターは `js/data/site.js`（選手名・ナビ・SNS）を直接参照する。`site.nav` はヘッダーのナビとトップのメニューの両方で使う。ページを増やすときは HTML・`js/pages/<page>.js` を作り、`site.nav` に項目を追加する。`tt-header` はハッシュのないリンクが現在のページと一致すると `aria-current="page"` を付ける。
+- 同じデータを複数ページ・複数箇所で使う。形が合わない場合はデータを複製せず、ページ用スクリプトで変換して渡す（`home.js` で戦績・お知らせの最新1件をメニューのプレビューにしている例を参照）。
 
 ### コンポーネント（`js/components/`）
 

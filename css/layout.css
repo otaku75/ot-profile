@@ -25,6 +25,11 @@
   padding-top: var(--space-6);
 }
 
+/* 直前の要素に続けて置くセクション（上の余白をなくす。トップのメニューなど） */
+.section--flush-top {
+  padding-top: 0;
+}
+
 /* 2カラム（900px 未満は縦積み） */
 .split {
   display: grid;
@@ -69,6 +74,11 @@
 
 .flow--lg > * + * {
   margin-top: var(--space-7);
+}
+
+/* 読みやすい行の長さに抑える（左揃えのまま） */
+.measure {
+  max-width: 44rem;
 }
 
 /* 中央揃えの短文は、文節単位で折り返して行の長さを揃える */

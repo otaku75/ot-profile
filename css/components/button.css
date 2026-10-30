@@ -32,3 +32,22 @@
   box-shadow: 0 0 0 var(--color-outline);
   transform: translateY(var(--shadow-offset));
 }
+
+/* 小さいボタン（戻るボタンなど） */
+.button--sm {
+  --shadow-offset: 4px;
+
+  min-height: 2.5rem;
+  padding-inline: var(--space-5);
+  font-size: var(--font-size-sm);
+}
+
+/* 白いボタン（主操作ではないもの） */
+.button--secondary {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.button--secondary:hover {
+  background-color: var(--color-bg-subtle);
+}

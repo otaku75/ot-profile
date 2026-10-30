@@ -8,3 +8,5 @@ import './tt-timeline.js';
 import './tt-stat-list.js';
 import './tt-equipment-list.js';
 import './tt-news-list.js';
+import './tt-menu.js';
+import './tt-page-header.js';
