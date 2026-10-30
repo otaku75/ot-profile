@@ -1,0 +1,86 @@
+tt-sponsor-list {
+  display: block;
+}
+
+/* カードは 1 枚でも横幅いっぱいに広がり、増えたら自動で折り返す */
+.tt-sponsor-list__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: var(--space-6);
+}
+
+/* カード自身の幅で並び方を変える（ページ幅ではなくカード幅で判断するため、コンテナクエリを使う） */
+.tt-sponsor-list__item {
+  container-type: inline-size;
+}
+
+.tt-sponsor-list__card {
+  display: grid;
+  gap: var(--space-5);
+  height: 100%;
+}
+
+@container (min-width: 40rem) {
+  .tt-sponsor-list__card {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: center;
+    gap: var(--space-7);
+  }
+}
+
+/* ロゴ欄。ゲームのアイテム枠のようなドット柄の枠 */
+.tt-sponsor-list__logo {
+  display: grid;
+  place-items: center;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  aspect-ratio: 16 / 10;
+  padding: var(--space-5);
+  border: 2px solid var(--color-outline);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-subtle);
+}
+
+/* 縦長・正方形のロゴでも枠の形（16:10）を崩さず、枠の中に収める */
+.tt-sponsor-list__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tt-sponsor-list__logo-text {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.tt-sponsor-list__body > * + * {
+  margin-top: var(--space-3);
+}
+
+.tt-sponsor-list__body > .tag {
+  display: inline-block;
+}
+
+.tt-sponsor-list__name {
+  font-size: var(--font-size-xl);
+}
+
+.tt-sponsor-list__description {
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
+}
+
+.tt-sponsor-list__body > :last-child:has(.button) {
+  margin-top: var(--space-5);
+}
+
+/* 外部リンクの矢印（↗） */
+.tt-sponsor-list__external {
+  width: 0.7rem;
+  height: 0.7rem;
+  background-color: currentColor;
+  clip-path: polygon(30% 0, 100% 0, 100% 70%, 78% 48%, 22% 100%, 0 78%, 52% 22%);
+}

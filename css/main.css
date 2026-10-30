@@ -8,6 +8,8 @@
 /* CSSのみの部品 */
 @import url("./components/button.css");
 @import url("./components/tag.css");
+@import url("./components/choice-list.css");
+@import url("./components/bounce-ball.css");
 @import url("./components/photo.css");
 @import url("./components/panel.css");
 
@@ -25,3 +27,4 @@
 @import url("./components/tt-page-header.css");
 @import url("./components/tt-photo-gallery.css");
 @import url("./components/tt-video-list.css");
+@import url("./components/tt-sponsor-list.css");

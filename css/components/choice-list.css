@@ -1,0 +1,68 @@
+/* ゲームの選択肢風のリンク一覧（JS不要のためCSSクラスのみ）。選ばれている項目に ▶ カーソルが付く
+   何も選んでいない（ホバー・フォーカスがない）ときは先頭の項目が選ばれている扱いになる
+   <ul class="choice-list">
+     <li><a href="...">Yes<span class="choice-list__note">補足</span></a></li>
+   </ul> */
+
+/* カーソル・項目名・補足の3列。subgrid で全項目の列幅を揃える */
+.choice-list {
+  display: grid;
+  grid-template-columns: 1.5rem auto auto;
+  justify-content: center;
+  gap: var(--space-2) 0;
+}
+
+.choice-list li,
+.choice-list a {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+}
+
+.choice-list a {
+  gap: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  transition: color var(--duration-fast) var(--ease);
+}
+
+.choice-list__note {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.04em;
+}
+
+/* ▶ カーソル */
+.choice-list a::before {
+  content: "";
+  width: 0.9rem;
+  height: 1.1rem;
+  background-color: var(--color-primary);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  opacity: 0;
+}
+
+.choice-list a:is(:hover, :focus-visible),
+.choice-list:not(:has(a:is(:hover, :focus-visible))) li:first-child a {
+  color: var(--color-text);
+}
+
+.choice-list a:is(:hover, :focus-visible)::before,
+.choice-list:not(:has(a:is(:hover, :focus-visible))) li:first-child a::before {
+  opacity: 1;
+  animation: choice-list-cursor 0.8s var(--ease) infinite;
+}
+
+@keyframes choice-list-cursor {
+  50% {
+    transform: translateX(-4px);
+  }
+}

@@ -30,6 +30,13 @@
   padding-top: 0;
 }
 
+/* ヘッダーを除いた画面いっぱいの高さにして、中身を上下中央に置く（404ページなど） */
+.section--fill {
+  display: grid;
+  align-items: center;
+  min-height: calc(100svh - var(--header-height));
+}
+
 /* 2カラム（900px 未満は縦積み） */
 .split {
   display: grid;

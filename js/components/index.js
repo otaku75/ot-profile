@@ -12,3 +12,4 @@ import './tt-menu.js';
 import './tt-page-header.js';
 import './tt-photo-gallery.js';
 import './tt-video-list.js';
+import './tt-sponsor-list.js';

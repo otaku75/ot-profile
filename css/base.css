@@ -116,6 +116,21 @@ button {
   text-shadow: 0.06em 0.06em 0 var(--color-primary);
 }
 
+.display-title--xl {
+  font-size: var(--font-size-display);
+}
+
+/* ゲームの「PRESS START」のように点滅させる */
+.blink {
+  animation: blink 1.2s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 /* 注記などの小さな補足文 */
 .caption {
   font-size: var(--font-size-sm);

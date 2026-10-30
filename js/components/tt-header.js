@@ -82,7 +82,7 @@ class TtHeader extends BaseElement {
 
 // ページ内アンカー（'./#results' など）は現在地として扱わない
 function isCurrentPage(href) {
-  const url = new URL(href, location.href);
+  const url = new URL(href, document.baseURI);
   return !url.hash && url.pathname === location.pathname;
 }
 

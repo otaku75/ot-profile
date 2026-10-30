@@ -23,7 +23,8 @@ python3 -m http.server 8000   # http://localhost:8000
 
 ### ページの組み立て
 
-- 縦に長い1ページではなく、ゲームのメニュー画面のようにボタンで画面を移動する構成。トップ（`index.html`）はヒーロー＋メニュー（`tt-menu`）だけのタイトル画面で、内容は下層ページ（`profile.html` / `results.html` / `gallery.html` / `news.html` / `contact.html`）に分ける。下層ページは先頭に `tt-page-header`（メニューへ戻るボタン＋h1）を置く。
+- 縦に長い1ページではなく、ゲームのメニュー画面のようにボタンで画面を移動する構成。トップ（`index.html`）はヒーロー＋メニュー（`tt-menu`）だけのタイトル画面で、内容は下層ページ（`profile.html` / `results.html` / `gallery.html` / `news.html` / `sponsor.html` / `contact.html`）に分ける。下層ページは先頭に `tt-page-header`（メニューへ戻るボタン＋h1）を置く。
+- `404.html` は存在しない URL のときにホスティング側（GitHub Pages / Cloudflare）が返すページ。どの階層の URL でも表示されるため、`<base href="/">` で相対パスをサイトのルート基準にしている。サイトをサブパス（`/リポジトリ名/` など）で公開する場合はこの href を変える。ローカルの `python3 -m http.server` では 404.html は返らないので、確認は `/404.html` を直接開く。
 - ページ移動の演出は `css/base.css` の View Transitions（`@view-transition`）で CSS だけで行う。固定ヘッダーは `view-transition-name` で演出から外している。
 - ページはルート直下のHTML。各ページは `css/main.css`（全共通CSSのエントリ）と、ページ用スクリプト `js/pages/<page>.js` を1つずつ読み込む。
 - ページ用スクリプトは最初に `js/components/index.js`（全コンポーネントの登録）を import し、その後 `js/data/` のデータを各コンポーネントの `data` プロパティに代入する。import 順により define 済みの要素に代入されることが前提なので、この順序を崩さない。
