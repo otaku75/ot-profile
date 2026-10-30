@@ -1,0 +1,213 @@
+tt-photo-gallery {
+  display: block;
+}
+
+/* =========================================================
+   タイル一覧（モバイル: 2列 / 600px 以上: 3列 / 900px 以上: 4列）
+   ========================================================= */
+
+.tt-photo-gallery__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+@media (min-width: 600px) {
+  .tt-photo-gallery__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+}
+
+@media (min-width: 900px) {
+  .tt-photo-gallery__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* 押すとボタンのように沈むタイル */
+.tt-photo-gallery__thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: var(--outline-width) solid var(--color-outline);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-subtle);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-outline);
+  transition:
+    transform var(--duration-fast) var(--ease),
+    box-shadow var(--duration-fast) var(--ease);
+}
+
+.tt-photo-gallery__thumb:hover {
+  box-shadow: calc(var(--shadow-offset) / 2) calc(var(--shadow-offset) / 2) 0 var(--color-outline);
+  transform: translate(calc(var(--shadow-offset) / 2), calc(var(--shadow-offset) / 2));
+}
+
+.tt-photo-gallery__thumb:active {
+  box-shadow: 0 0 0 var(--color-outline);
+  transform: translate(var(--shadow-offset), var(--shadow-offset));
+}
+
+.tt-photo-gallery__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--tt-photo-gallery-focus, center);
+  transition: transform var(--duration-base) var(--ease);
+}
+
+.tt-photo-gallery__thumb:hover img {
+  transform: scale(1.04);
+}
+
+/* =========================================================
+   ビューア（全画面のダイアログ。.theme-dark で暗いドット柄になる）
+   ========================================================= */
+
+.tt-photo-gallery__dialog {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overscroll-behavior: contain;
+}
+
+/* 開いている間は後ろのページをスクロールさせない */
+html:has(.tt-photo-gallery__dialog[open]) {
+  overflow: hidden;
+}
+
+.tt-photo-gallery__viewer {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  height: 100%;
+  padding: var(--space-4) var(--container-padding) var(--space-6);
+}
+
+.tt-photo-gallery__figure {
+  /* 横方向の指の動きはスワイプに使う（縦スクロールと拡大はブラウザに任せる） */
+  touch-action: pan-y pinch-zoom;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  justify-items: center;
+  gap: var(--space-4);
+}
+
+/* 閉じるボタン・前後ボタン・カウンターの分を引いた高さに収める */
+.tt-photo-gallery__image {
+  width: auto;
+  max-height: calc(100svh - 14rem);
+  border: var(--outline-width) solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  animation: tt-photo-gallery-pop var(--duration-base) var(--ease) both;
+}
+
+.tt-photo-gallery__caption {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.tt-photo-gallery__caption:empty {
+  display: none;
+}
+
+.tt-photo-gallery__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+}
+
+.tt-photo-gallery__count {
+  min-width: 4em;
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+/* 丸いボタン（閉じる・前後） */
+.tt-photo-gallery__close,
+.tt-photo-gallery__step {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: var(--outline-width) solid var(--palette-ink);
+  border-radius: 50%;
+  box-shadow: 0 4px 0 var(--palette-ink);
+  transition:
+    transform var(--duration-fast) var(--ease),
+    box-shadow var(--duration-fast) var(--ease),
+    background-color var(--duration-fast) var(--ease);
+}
+
+.tt-photo-gallery__close:active,
+.tt-photo-gallery__step:active {
+  box-shadow: 0 0 0 var(--palette-ink);
+  transform: translateY(4px);
+}
+
+.tt-photo-gallery__close {
+  justify-self: end;
+  background-color: var(--palette-white);
+}
+
+/* × を2本の線で描く */
+.tt-photo-gallery__close::before,
+.tt-photo-gallery__close::after {
+  content: "";
+  grid-area: 1 / 1;
+  width: 1.1rem;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--palette-ink);
+  transform: rotate(45deg);
+}
+
+.tt-photo-gallery__close::after {
+  transform: rotate(-45deg);
+}
+
+.tt-photo-gallery__step {
+  background-color: var(--color-primary);
+}
+
+.tt-photo-gallery__step:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* 三角の矢印 */
+.tt-photo-gallery__step::before {
+  content: "";
+  width: 0.8rem;
+  height: 0.9rem;
+  background-color: var(--palette-ink);
+}
+
+.tt-photo-gallery__step--prev::before {
+  margin-right: 0.15rem;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.tt-photo-gallery__step--next::before {
+  margin-left: 0.15rem;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+@keyframes tt-photo-gallery-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}

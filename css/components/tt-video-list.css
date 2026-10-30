@@ -1,0 +1,120 @@
+tt-video-list {
+  display: block;
+}
+
+/* モバイル: 1列 / 600px 以上: 2列 */
+.tt-video-list__list {
+  display: grid;
+  gap: var(--space-6);
+}
+
+@media (min-width: 600px) {
+  .tt-video-list__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--space-5);
+  }
+}
+
+.tt-video-list__media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: var(--outline-width) solid var(--color-outline);
+  border-radius: var(--radius-lg);
+  background-color: var(--palette-charcoal-900);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-outline);
+}
+
+.tt-video-list__play,
+.tt-video-list__placeholder,
+.tt-video-list__frame {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.tt-video-list__frame {
+  border: 0;
+}
+
+/* サムネイルと再生ボタンを重ねる */
+.tt-video-list__play > * {
+  grid-area: 1 / 1;
+}
+
+.tt-video-list__play img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* hqdefault の上下の黒帯を切り落とす */
+  transition: transform var(--duration-base) var(--ease);
+}
+
+.tt-video-list__play:hover img {
+  transform: scale(1.04);
+}
+
+/* 丸い再生ボタン */
+.tt-video-list__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border: var(--outline-width) solid var(--palette-ink);
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  box-shadow: 0 5px 0 var(--palette-ink);
+  transition:
+    transform var(--duration-fast) var(--ease),
+    background-color var(--duration-fast) var(--ease);
+}
+
+.tt-video-list__icon::before {
+  content: "";
+  width: 1.4rem;
+  height: 1.6rem;
+  margin-left: 0.3rem;
+  background-color: var(--palette-ink);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.tt-video-list__play:hover .tt-video-list__icon {
+  background-color: var(--color-primary-hover);
+  transform: scale(1.08);
+}
+
+/* 動画がまだないとき */
+.tt-video-list__placeholder {
+  align-content: center;
+  gap: var(--space-3);
+  background-color: var(--color-bg-subtle);
+}
+
+.tt-video-list__placeholder .tt-video-list__icon {
+  background-color: var(--color-surface);
+  opacity: 0.5;
+}
+
+.tt-video-list__soon {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.tt-video-list__body {
+  margin-top: var(--space-4);
+}
+
+.tt-video-list__date {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.tt-video-list__title {
+  font-weight: 700;
+  line-height: 1.6;
+}

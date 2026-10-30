@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-卓球選手のWebサイト兼ポートフォリオ。素のHTML / CSS / JavaScriptのみで作り、フレームワーク・ビルドツール・npm依存は導入しない（導入する場合は事前にユーザーに確認する）。外部依存は Google Fonts（Fredoka / Zen Maru Gothic）のみ。
+卓球選手のWebサイト兼ポートフォリオ。素のHTML / CSS / JavaScriptのみで作り、フレームワーク・ビルドツール・npm依存は導入しない（導入する場合は事前にユーザーに確認する）。外部依存は Google Fonts（Fredoka / Zen Maru Gothic）と、ギャラリーの YouTube（サムネイル画像と、再生ボタンを押したときに読み込む埋め込みプレーヤー）のみ。
 
 - デザインはシンプル寄りをベースに、ユーザーの好みである「丸いドット柄の背景」「ゲームっぽさ」「柔らかいグリーン系」で個性を出す。
 - UI部品はコンポーネント化し、複数ページ・複数箇所で再利用できるようにする。
@@ -23,7 +23,7 @@ python3 -m http.server 8000   # http://localhost:8000
 
 ### ページの組み立て
 
-- 縦に長い1ページではなく、ゲームのメニュー画面のようにボタンで画面を移動する構成。トップ（`index.html`）はヒーロー＋メニュー（`tt-menu`）だけのタイトル画面で、内容は下層ページ（`profile.html` / `results.html` / `news.html` / `contact.html`）に分ける。下層ページは先頭に `tt-page-header`（メニューへ戻るボタン＋h1）を置く。
+- 縦に長い1ページではなく、ゲームのメニュー画面のようにボタンで画面を移動する構成。トップ（`index.html`）はヒーロー＋メニュー（`tt-menu`）だけのタイトル画面で、内容は下層ページ（`profile.html` / `results.html` / `gallery.html` / `news.html` / `contact.html`）に分ける。下層ページは先頭に `tt-page-header`（メニューへ戻るボタン＋h1）を置く。
 - ページ移動の演出は `css/base.css` の View Transitions（`@view-transition`）で CSS だけで行う。固定ヘッダーは `view-transition-name` で演出から外している。
 - ページはルート直下のHTML。各ページは `css/main.css`（全共通CSSのエントリ）と、ページ用スクリプト `js/pages/<page>.js` を1つずつ読み込む。
 - ページ用スクリプトは最初に `js/components/index.js`（全コンポーネントの登録）を import し、その後 `js/data/` のデータを各コンポーネントの `data` プロパティに代入する。import 順により define 済みの要素に代入されることが前提なので、この順序を崩さない。

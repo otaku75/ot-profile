@@ -12,6 +12,7 @@ export const site = {
   nav: [
     { id: 'profile', label: 'Profile', ja: 'プロフィール', href: 'profile.html', description: '能力値・そうび・卓球歴' },
     { id: 'results', label: 'Results', ja: '戦績', href: 'results.html', description: 'これまでの戦績' },
+    { id: 'gallery', label: 'Gallery', ja: 'ギャラリー', href: 'gallery.html', description: '試合や練習の写真・動画' },
     { id: 'news', label: 'News', ja: 'お知らせ', href: 'news.html', description: 'お知らせ・試合予定' },
     { id: 'contact', label: 'Contact', ja: 'お問い合わせ', href: 'contact.html', description: '取材・出演のご相談はこちら' },
   ],

@@ -2,7 +2,7 @@ tt-menu {
   display: block;
 }
 
-/* モバイル: 1列 / 600px 以上: 2列 / 900px 以上: 4列 */
+/* モバイル: 1列 / 600px 以上: 2列 / 900px 以上: 3列 */
 .tt-menu__list {
   display: grid;
   gap: var(--space-4);
@@ -17,7 +17,7 @@ tt-menu {
 
 @media (min-width: 900px) {
   .tt-menu__list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

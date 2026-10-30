@@ -10,3 +10,5 @@ import './tt-equipment-list.js';
 import './tt-news-list.js';
 import './tt-menu.js';
 import './tt-page-header.js';
+import './tt-photo-gallery.js';
+import './tt-video-list.js';
