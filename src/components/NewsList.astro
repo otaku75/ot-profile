@@ -1,0 +1,30 @@
+---
+/**
+ * お知らせの一覧（新しい順に渡す）。url があるとタイトルがリンクになる。
+ */
+import { formatDate } from "../lib/content";
+
+interface Props {
+	items: { date: string; category?: string | null; title: string; url?: string | null }[];
+	/** 表示件数の上限 */
+	limit?: number;
+}
+
+const { items, limit = Infinity } = Astro.props;
+---
+
+<tt-news-list>
+	<ul class="tt-news-list__list">
+		{
+			items.slice(0, limit).map((item) => (
+				<li class="tt-news-list__item">
+					<time class="tt-news-list__date" datetime={item.date}>
+						{formatDate(item.date)}
+					</time>
+					<span class="tt-news-list__category">{item.category && <span class="tag">{item.category}</span>}</span>
+					<p class="tt-news-list__title">{item.url ? <a href={item.url}>{item.title}</a> : item.title}</p>
+				</li>
+			))
+		}
+	</ul>
+</tt-news-list>

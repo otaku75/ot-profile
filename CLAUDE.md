@@ -4,56 +4,67 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-卓球選手のWebサイト兼ポートフォリオ。素のHTML / CSS / JavaScriptのみで作り、フレームワーク・ビルドツール・npm依存は導入しない（導入する場合は事前にユーザーに確認する）。外部依存は Google Fonts（Fredoka / Zen Maru Gothic）と、ギャラリーの YouTube（サムネイル画像と、再生ボタンを押したときに読み込む埋め込みプレーヤー）のみ。
+卓球選手のWebサイト兼ポートフォリオ。[EmDash](https://docs.emdashcms.com/)（Astro ベースの CMS）で作り、Cloudflare Workers（D1 / R2）で動かす。プロフィール・戦績・お知らせなどのコンテンツは管理画面（`/_emdash/admin`）から編集する。素の HTML / CSS / JS で作っていた静的サイト版は git タグ `static-v1` に残っている。
 
+- npm 依存は package.json にあるもの（Astro / EmDash / Cloudflare 関連）だけ。新しく追加する場合は事前にユーザーに確認する。ページ側の外部依存は Google Fonts（Fredoka / Zen Maru Gothic）と、ギャラリーの YouTube（サムネイル画像と、再生ボタンを押したときに読み込む埋め込みプレーヤー）のみ。
+- 公開（`npm run deploy` / `wrangler deploy`）は、ユーザーの指示があるまで行わない。
 - デザインはシンプル寄りをベースに、ユーザーの好みである「丸いドット柄の背景」「ゲームっぽさ」「柔らかいグリーン系」で個性を出す。
 - UI部品はコンポーネント化し、複数ページ・複数箇所で再利用できるようにする。
 
 ## 開発コマンド
 
-ES Modules を使うため `file://` で直接開くと動かない。必ずローカルサーバー経由で確認する。
-
 ```bash
-python3 -m http.server 8000   # http://localhost:8000
+npm run dev         # http://localhost:4321（バックグラウンドで起動する。止めるのは npx astro dev stop、ログは npx astro dev logs）
+npm run typecheck   # astro check（型チェック）
 ```
 
-ビルド・リント・テストの仕組みはなし。
+テスト・リントの仕組みはなし。
+
+- 管理画面は `http://localhost:4321/_emdash/admin`。ローカルでは `/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin` を開くと、パスキーの登録なしで開発用の管理者としてログインできる（開発サーバーでのみ有効）。
+- ローカルの DB・画像は `.wrangler/state/` にある（git 管理外）。初回アクセス時に `seed/seed.json` のコレクション定義だけが自動で入る。ダミーのコンテンツも入れるには上の dev-bypass を開く（シードのコンテンツが入る）。
+- 画像はシードに書けないので、`npx emdash media upload <file> --alt "..."` でアップロードし、管理画面か `npx emdash content update` でコンテンツに設定する。元の写真は `seed/images/` にある。
+- EmDash の API・フィールド型などを確かめるときは、記憶に頼らず docs の MCP サーバー（`.mcp.json` の emdash-docs）か `.agents/skills/`（building-emdash-site / emdash-cli / creating-plugins）を参照する。
 
 ## アーキテクチャ
 
 ### ページの組み立て
 
-- 縦に長い1ページではなく、ゲームのメニュー画面のようにボタンで画面を移動する構成。トップ（`index.html`）はヒーロー＋メニュー（`tt-menu`）だけのタイトル画面で、内容は下層ページ（`profile.html` / `results.html` / `gallery.html` / `news.html` / `sponsor.html` / `contact.html`）に分ける。下層ページは先頭に `tt-page-header`（メニューへ戻るボタン＋h1）を置く。
-- `404.html` は存在しない URL のときにホスティング側（GitHub Pages / Cloudflare）が返すページ。どの階層の URL でも表示されるため、`<base href="/">` で相対パスをサイトのルート基準にしている。サイトをサブパス（`/リポジトリ名/` など）で公開する場合はこの href を変える。ローカルの `python3 -m http.server` では 404.html は返らないので、確認は `/404.html` を直接開く。
-- ページ移動の演出は `css/base.css` の View Transitions（`@view-transition`）で CSS だけで行う。固定ヘッダーは `view-transition-name` で演出から外している。
-- ページはルート直下のHTML。各ページは `css/main.css`（全共通CSSのエントリ）と、ページ用スクリプト `js/pages/<page>.js` を1つずつ読み込む。
-- ページ用スクリプトは最初に `js/components/index.js`（全コンポーネントの登録）を import し、その後 `js/data/` のデータを各コンポーネントの `data` プロパティに代入する。import 順により define 済みの要素に代入されることが前提なので、この順序を崩さない。
-- ヘッダー・フッターは `js/data/site.js`（選手名・ナビ・SNS）を直接参照する。`site.nav` はヘッダーのナビとトップのメニューの両方で使う。ページを増やすときは HTML・`js/pages/<page>.js` を作り、`site.nav` に項目を追加する。`tt-header` はハッシュのないリンクが現在のページと一致すると `aria-current="page"` を付ける。
-- 同じデータを複数ページ・複数箇所で使う。形が合わない場合はデータを複製せず、ページ用スクリプトで変換して渡す（`home.js` で戦績・お知らせの最新1件をメニューのプレビューにしている例を参照）。
+- 縦に長い1ページではなく、ゲームのメニュー画面のようにボタンで画面を移動する構成。トップ（`src/pages/index.astro`）はヒーロー＋メニューだけのタイトル画面で、内容は下層ページ（`profile` / `results` / `gallery` / `news` / `sponsor` / `contact`）に分ける。下層ページは先頭に `PageHeader`（メニューへ戻るボタン＋h1）を置く。
+- ページは `src/pages/*.astro`。すべてサーバーでレンダリングする（`output: "server"`。CMS のコンテンツに `getStaticPaths()` は使わない）。
+- 全ページ共通の `<head>`・ヘッダー・フッター・EmDash の差し込み口（`EmDashHead` など）は `src/layouts/Base.astro`。SEO 用の meta は `EmDashHead` が出すので、ページ側は `title` / `description` を渡すだけにする。
+- 存在しない URL では `src/pages/404.astro`（GAME OVER 風）が返る。
+- ページ移動の演出は `src/styles/base.css` の View Transitions（`@view-transition`）で CSS だけで行う。固定ヘッダーは `view-transition-name` で演出から外している。
+- ナビ（ヘッダーとトップのメニューの両方で使う）はコードで管理する（`src/data/site.ts`）。ページを増やすときは `src/pages/` にページを作り、`nav` に項目を足す。ヘッダーは現在の URL と一致するリンクに `aria-current="page"` を付ける。
 
-### コンポーネント（`js/components/`）
+### コンテンツ（EmDash）
 
-- Custom Elements。タグ名は `tt-` プレフィックスで、JS/CSS のファイル名もタグ名と揃える（`tt-timeline` → `js/components/tt-timeline.js` + `css/components/tt-timeline.css`）。
-- 用途を限定しない汎用的なデータ形にして使い回す（例: `tt-timeline` は戦績と卓球歴の両方で使う）。
-- すべて `BaseElement`（`base-element.js`）を継承し、`render()` が返したHTMLを Light DOM の innerHTML に描画する。Shadow DOM は使わない。
-- 入力は、文字列なら属性（`static observedAttributes` に列挙すると変更時に再描画）、配列・オブジェクトなら `data` プロパティ。各コンポーネント先頭の JSDoc に属性と data の形を書く。
-- テンプレートは `js/utils/html.js` の `html` タグ付きテンプレートで書く。埋め込み値は自動エスケープされ、ネストした `html` と配列はそのまま展開される。生文字列を連結して innerHTML に入れない。
-- 再描画で中身が丸ごと置き換わるため、イベントは子要素ではなくホスト要素に委譲して constructor で登録する（`tt-header` 参照）。`connectedCallback` / `disconnectedCallback` を上書きする場合は `super` を呼ぶ。
-- 新しいコンポーネントは `js/components/index.js` と `css/main.css` の両方に登録する。
-- JS が不要な見た目だけの部品（`.button`, `.tag` など）は Custom Element にせず、`css/components/` の CSS クラスにする。
+- コレクションの定義（スキーマ）とダミーのコンテンツは `seed/seed.json`。コレクションは `profile`（1件だけ作る。名前・写真・自己紹介・基本情報・能力値・そうび・卓球歴・連絡先メール）/ `results` / `news` / `photos` / `videos` / `sponsors`。SNS のアカウントは管理画面のサイト設定（Social）に入れる。
+- `seed.json` を変えても、すでに作られた DB には反映されない。管理画面の Content Types で同じ変更をするか、ローカルなら `.wrangler/state/` を消して作り直す。
+- コンテンツの取得と表示用の並べ替えは `src/lib/content.ts` にまとめ、ページはそこから取得する。同じデータを複数ページで使い、形が合わない場合はページ側で変換して渡す（`index.astro` で戦績・お知らせの最新1件をメニューのプレビューにしている例を参照）。
+- 日付は年月だけの場合もあるので、`'YYYY-MM-DD'` / `'YYYY-MM'` / `'YYYY'` の文字列フィールドで持ち、文字列の比較で並べる。
+- 画像フィールドはオブジェクト（`{ id, alt, width, height, focalX, focalY, ... }`）。`emdash/ui` の `Image` で表示する。表示位置は管理画面で設定するフォーカルポイントが `object-position` として入るので、CSS で画像の位置を決めない。正方形などに切り抜く場合も `width` / `height` を渡してサーバーで切り抜かず、CSS の `object-fit` で切り抜く（サーバー側の切り抜きはフォーカルポイントを無視して中央になるため）。
+- 自己紹介などのリッチテキストは Portable Text。`emdash/ui` の `PortableText` で表示する。
 
-### CSS
+### コンポーネント（`src/components/`）
 
-- `css/main.css` が `@import` で tokens → base → layout → components の順に読み込む。
-- 色・余白・フォントサイズなどは `css/tokens.css` のカスタムプロパティを使う。色はセマンティックトークン（`--color-text`, `--color-border` など）経由で指定する。
+- Astro コンポーネント。ファイル名はパスカルケース（`Timeline.astro`）で、ルート要素は `tt-` プレフィックスのタグ（`<tt-timeline>`）にし、CSS（`src/styles/components/tt-timeline.css`）はタグ名と揃える。
+- 用途を限定しない汎用的な props にして使い回す（例: `Timeline` は戦績と卓球歴の両方で使う）。各コンポーネント先頭の JSDoc と `Props` に入力の形を書く。
+- 動きのある部品（ヘッダーの開閉、能力値の演出、写真ビューア、動画の再生、404 の選択肢）は、同じファイルの `<script>` で Custom Element を定義し、サーバーで描画した中身に振る舞いだけを付ける。中身は描画し直さない。イベントはホスト要素に委譲して constructor で登録する（`Header.astro` 参照）。
+- 新しいコンポーネントの CSS は `src/styles/main.css` に登録する。
+- JS が不要な見た目だけの部品（`.button`, `.tag` など）はコンポーネントにせず、`src/styles/components/` の CSS クラスにする。
+
+### CSS（`src/styles/`）
+
+- `Base.astro` が `src/styles/main.css` を読み込み、`main.css` が `@import` で tokens → base → layout → components の順に読み込む。
+- 色・余白・フォントサイズなどは `tokens.css` のカスタムプロパティを使う。色はセマンティックトークン（`--color-text`, `--color-border` など）経由で指定する。
 - ダーク配色は `.theme-dark` クラスがセマンティックトークンを上書きする仕組み。コンポーネントがトークン経由で色を指定していれば、暗いセクション内でも自動で追従する。
-- 写真以外の背景はドット柄にする。`css/base.css` で `body` / `.section--muted` / `.theme-dark` / `.bg-dots` に敷いているので、背景色を持つ面を新しく作るときは `.bg-dots` などで同じ柄を敷き、写真の上では `background: none` で消す（`tt-hero` 参照）。
+- 写真以外の背景はドット柄にする。`base.css` で `body` / `.section--muted` / `.theme-dark` / `.bg-dots` に敷いているので、背景色を持つ面を新しく作るときは `.bg-dots` などで同じ柄を敷き、写真の上では `background: none` で消す（`tt-hero` 参照）。
 - ゲーム風の見た目は、太い輪郭線（`--outline-width`）とずらした影（`--shadow-offset`）の組み合わせで統一する（`.panel`, `.button`, `.photo`）。
 - クラス名はタグ名をブロックにした BEM（`.tt-header__nav`）。状態はホストの属性（`tt-header[menu-open]`）か `is-*` クラスで表す。
-- レイアウト用ユーティリティ（`.container`, `.section`, `.split`, `.flow` など）は `css/layout.css`。
+- レイアウト用ユーティリティ（`.container`, `.section`, `.split`, `.flow` など）は `layout.css`。
 - ブレークポイントは 600px / 900px（モバイルファースト、`min-width`）。
 
 ### データ・素材
 
-- `js/data/` の値は現在「〇〇」のダミー。実データに差し替える前提で、構造（キー名）はコンポーネント側の JSDoc に合わせる。
-- 画像は `assets/images/` に置く。
+- コンテンツの値は現在「〇〇」のダミー。管理画面から実データに差し替える。
+- ファビコンなどそのまま配信するファイルは `public/`。写真は管理画面（メディア）にアップロードする。

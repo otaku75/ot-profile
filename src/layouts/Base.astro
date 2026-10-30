@@ -1,0 +1,68 @@
+---
+/**
+ * 全ページ共通のレイアウト。<head>、ヘッダー、フッター、EmDash の差し込み口をまとめる。
+ * SEO 用の meta（description・OGP・canonical など）は EmDashHead が出力するので、ここでは書かない。
+ */
+import "../styles/main.css";
+import { getSiteSettings } from "emdash";
+import { createPublicPageContext } from "emdash/page";
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from "emdash/ui";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { FALLBACK_SITE_TITLE } from "../data/site";
+import { getProfile } from "../lib/content";
+
+interface Props {
+	/** ページ名（省略するとサイト名だけになる） */
+	title?: string;
+	/** 省略するとサイト設定のキャッチコピー */
+	description?: string;
+	/** <body> に付けるクラス（404 ページの theme-dark など） */
+	bodyClass?: string;
+	/** フッターを出すか */
+	footer?: boolean;
+	/** 検索結果に出さない（404 ページなど） */
+	noindex?: boolean;
+}
+
+const { title, description, bodyClass, footer = true, noindex = false } = Astro.props;
+const [settings, profile] = await Promise.all([getSiteSettings(), getProfile()]);
+const siteTitle = settings.title || FALLBACK_SITE_TITLE;
+const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+const name = profile?.data.name_en || siteTitle;
+
+const page = createPublicPageContext({
+	Astro,
+	kind: "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: title ?? siteTitle,
+	description: description ?? settings.tagline,
+	siteName: siteTitle,
+	seo: noindex ? { robots: "noindex" } : undefined,
+});
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{fullTitle}</title>
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Zen+Maru+Gothic:wght@500;700&display=swap"
+		/>
+		<EmDashHead page={page} />
+	</head>
+	<body class={bodyClass}>
+		<EmDashBodyStart page={page} />
+		<Header name={name} />
+		<slot />
+		{footer && <Footer name={name} social={settings.social} />}
+		<EmDashBodyEnd page={page} />
+	</body>
+</html>

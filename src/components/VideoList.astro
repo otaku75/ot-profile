@@ -1,0 +1,83 @@
+---
+/**
+ * YouTube 動画の一覧。最初はサムネイルと再生ボタンだけを表示し、押したときに埋め込みプレーヤーを読み込む
+ * （ページを開いただけでは YouTube のプレーヤーや Cookie を読み込まないので、表示も速い）。
+ * youtube_id が空の動画は「COMING SOON」を表示する。
+ */
+import { formatDate } from "../lib/content";
+
+interface Props {
+	videos: { title: string; youtube_id?: string | null; date?: string | null }[];
+}
+
+const { videos } = Astro.props;
+---
+
+<tt-video-list>
+	<ul class="tt-video-list__list">
+		{
+			videos.map((video) => (
+				<li class="tt-video-list__item">
+					<div class="tt-video-list__media">
+						{video.youtube_id ? (
+							<button
+								type="button"
+								class="tt-video-list__play"
+								data-youtube-id={video.youtube_id}
+								data-title={video.title}
+							>
+								<img
+									src={`https://i.ytimg.com/vi/${encodeURIComponent(video.youtube_id)}/hqdefault.jpg`}
+									alt=""
+									loading="lazy"
+								/>
+								<span class="tt-video-list__icon" aria-hidden="true" />
+								<span class="visually-hidden">動画を再生: {video.title}</span>
+							</button>
+						) : (
+							<div class="tt-video-list__placeholder bg-dots">
+								<span class="tt-video-list__icon" aria-hidden="true" />
+								<span class="tt-video-list__soon">Coming soon</span>
+							</div>
+						)}
+					</div>
+					<div class="tt-video-list__body">
+						{video.date && (
+							<time class="tt-video-list__date" datetime={video.date}>
+								{formatDate(video.date)}
+							</time>
+						)}
+						<p class="tt-video-list__title">{video.title}</p>
+					</div>
+				</li>
+			))
+		}
+	</ul>
+</tt-video-list>
+
+<script>
+	class TtVideoList extends HTMLElement {
+		constructor() {
+			super();
+			this.addEventListener("click", (event) => {
+				const button = (event.target as Element).closest<HTMLElement>(".tt-video-list__play");
+				if (button) this.#play(button);
+			});
+		}
+
+		// 押されたサムネイルを埋め込みプレーヤーに差し替える
+		#play(button: HTMLElement) {
+			const { youtubeId = "", title = "" } = button.dataset;
+			const iframe = document.createElement("iframe");
+			iframe.className = "tt-video-list__frame";
+			iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeId)}?autoplay=1&rel=0`;
+			iframe.title = title;
+			iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+			iframe.allowFullscreen = true;
+			button.replaceWith(iframe);
+			iframe.focus();
+		}
+	}
+
+	customElements.define("tt-video-list", TtVideoList);
+</script>

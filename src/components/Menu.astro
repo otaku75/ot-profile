@@ -1,0 +1,29 @@
+---
+/**
+ * ゲームのメニュー画面風のリンクカード一覧。各カードは .panel で、押すと沈む。
+ */
+interface Props {
+	items: { href: string; label: string; ja?: string; preview?: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<tt-menu>
+	<ul class="tt-menu__list">
+		{
+			items.map((item) => (
+				<li>
+					<a class="tt-menu__card panel" href={item.href}>
+						<span class="tt-menu__head">
+							<span class="tt-menu__label">{item.label}</span>
+							<span class="tt-menu__arrow" aria-hidden="true" />
+						</span>
+						{item.ja && <span class="tt-menu__ja">{item.ja}</span>}
+						{item.preview && <span class="tt-menu__preview">{item.preview}</span>}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</tt-menu>

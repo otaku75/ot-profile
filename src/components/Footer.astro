@@ -1,0 +1,46 @@
+---
+/**
+ * サイト共通フッター。SNS は管理画面のサイト設定（Settings → Social）に入力したものだけを表示する。
+ */
+interface Props {
+	name: string;
+	/** getSiteSettings().social（アカウント名か URL） */
+	social?: Partial<Record<string, string>>;
+}
+
+const { name, social = {} } = Astro.props;
+
+// アカウント名（@ はあってもなくてもよい）なら URL を組み立てる。URL ならそのまま使う
+const SERVICES = [
+	{ key: "instagram", label: "Instagram", url: (handle: string) => `https://www.instagram.com/${handle}/` },
+	{ key: "twitter", label: "X", url: (handle: string) => `https://x.com/${handle}` },
+	{ key: "youtube", label: "YouTube", url: (handle: string) => `https://www.youtube.com/@${handle}` },
+];
+
+const links = SERVICES.flatMap(({ key, label, url }) => {
+	const value = social[key]?.trim();
+	if (!value) return [];
+	return [{ label, href: /^https?:\/\//.test(value) ? value : url(value.replace(/^@/, "")) }];
+});
+const year = new Date().getFullYear();
+---
+
+<tt-footer class="theme-dark">
+	<div class="tt-footer__inner container">
+		<p class="tt-footer__name">{name}</p>
+		{
+			links.length > 0 && (
+				<ul class="tt-footer__social">
+					{links.map((link) => (
+						<li>
+							<a href={link.href} target="_blank" rel="noopener">
+								{link.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			)
+		}
+		<p class="tt-footer__copyright"><small>&copy; {year} {name}</small></p>
+	</div>
+</tt-footer>

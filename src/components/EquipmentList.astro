@@ -1,0 +1,53 @@
+---
+/**
+ * 使用用具のカード一覧（ゲームの装備画面風）。各カードは .panel。
+ * 写真がない場合はドット柄の枠にラケットのアイコンを表示する。
+ */
+import type { ImageValue } from "emdash";
+import { Image } from "emdash/ui";
+
+interface Props {
+	items: {
+		/** 装備の部位（例: 'ラケット', 'ラバー（フォア）'） */
+		slot: string;
+		name: string;
+		maker?: string | null;
+		comment?: string | null;
+		image?: ImageValue | null;
+	}[];
+}
+
+const { items } = Astro.props;
+---
+
+<tt-equipment-list>
+	<ul class="tt-equipment-list__list">
+		{
+			items.map((item) => (
+				<li class="tt-equipment-list__item panel">
+					<p class="tag tag--primary">{item.slot}</p>
+					<div class="tt-equipment-list__main">
+						<div class="tt-equipment-list__icon bg-dots">
+							{item.image ? (
+								<Image image={item.image} alt="" sizes="7rem" />
+							) : (
+								<svg class="tt-equipment-list__racket" viewBox="0 0 48 48" aria-hidden="true">
+									<g transform="rotate(-15 21 26)">
+										<rect class="tt-equipment-list__racket-handle" x="15.5" y="28" width="11" height="17" rx="3.5" />
+										<ellipse class="tt-equipment-list__racket-head" cx="21" cy="17" rx="14.5" ry="15" />
+									</g>
+									<circle class="tt-equipment-list__racket-ball" cx="41" cy="31" r="4.5" />
+								</svg>
+							)}
+						</div>
+						<div>
+							<p class="tt-equipment-list__name">{item.name}</p>
+							{item.maker && <p class="tt-equipment-list__maker">{item.maker}</p>}
+						</div>
+					</div>
+					{item.comment && <p class="tt-equipment-list__comment">{item.comment}</p>}
+				</li>
+			))
+		}
+	</ul>
+</tt-equipment-list>

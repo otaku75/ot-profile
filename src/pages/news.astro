@@ -1,0 +1,22 @@
+---
+// お知らせページ
+import NewsList from "../components/NewsList.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Base from "../layouts/Base.astro";
+import { getNews } from "../lib/content";
+
+const news = await getNews();
+---
+
+<Base title="お知らせ">
+	<main>
+		<section class="section section--page-top" id="news">
+			<div class="container">
+				<PageHeader en="News" ja="お知らせ・試合予定" />
+				<div class="panel">
+					<NewsList items={news} />
+				</div>
+			</div>
+		</section>
+	</main>
+</Base>

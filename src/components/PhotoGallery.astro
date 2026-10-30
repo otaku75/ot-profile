@@ -1,0 +1,143 @@
+---
+/**
+ * 写真の一覧（正方形のタイル）。押すと全画面のビューアで大きく表示し、前後の写真に移動できる。
+ * ビューアは ← → キーやスワイプでも移動でき、Esc か写真の外を押すと閉じる（下の <script>）。
+ * 大きい画像は写真ごとの <template> に入れておき、表示するときに複製する（開くまで読み込まない）。
+ * タイルの正方形の切り抜きは CSS（object-fit）で行い、表示位置は管理画面で設定した写真のフォーカルポイントに従う。
+ */
+import type { ImageValue } from "emdash";
+import { Image } from "emdash/ui";
+
+interface Props {
+	photos: { title: string; image?: ImageValue | null }[];
+}
+
+const photos = Astro.props.photos.filter((photo) => photo.image);
+
+// タイルの幅（2〜4列）。横長の写真は正方形に切り抜くと幅の1.5倍で表示されるので、その分大きめにする
+const THUMB_SIZES = "(min-width: 1200px) 400px, (min-width: 900px) 35vw, (min-width: 600px) 47vw, 70vw";
+---
+
+<tt-photo-gallery>
+	<ul class="tt-photo-gallery__list">
+		{
+			photos.map((photo, i) => (
+				<li>
+					<button type="button" class="tt-photo-gallery__thumb" data-index={i} aria-haspopup="dialog">
+						<Image image={photo.image} alt={photo.image?.alt || photo.title} sizes={THUMB_SIZES} />
+					</button>
+					<template class="tt-photo-gallery__source" data-caption={photo.title}>
+						<Image image={photo.image} alt={photo.image?.alt || photo.title} class="tt-photo-gallery__image" loading="eager" />
+					</template>
+				</li>
+			))
+		}
+	</ul>
+	<dialog class="tt-photo-gallery__dialog theme-dark" aria-label="写真ビューア">
+		<div class="tt-photo-gallery__viewer">
+			<button type="button" class="tt-photo-gallery__close" aria-label="閉じる" />
+			<figure class="tt-photo-gallery__figure">
+				<img class="tt-photo-gallery__image" alt="" />
+				<figcaption class="tt-photo-gallery__caption" />
+			</figure>
+			{
+				photos.length > 1 && (
+					<div class="tt-photo-gallery__controls">
+						<button
+							type="button"
+							class="tt-photo-gallery__step tt-photo-gallery__step--prev"
+							data-step="-1"
+							aria-label="前の写真"
+						/>
+						<p class="tt-photo-gallery__count" aria-live="polite" />
+						<button
+							type="button"
+							class="tt-photo-gallery__step tt-photo-gallery__step--next"
+							data-step="1"
+							aria-label="次の写真"
+						/>
+					</div>
+				)
+			}
+		</div>
+	</dialog>
+</tt-photo-gallery>
+
+<script>
+	class TtPhotoGallery extends HTMLElement {
+		#index = 0;
+		#swipeStart: { x: number; y: number } | null = null;
+
+		constructor() {
+			super();
+			this.addEventListener("click", (event) => {
+				const target = event.target as Element;
+				const thumb = target.closest<HTMLElement>(".tt-photo-gallery__thumb");
+				const step = target.closest<HTMLElement>(".tt-photo-gallery__step");
+				if (thumb) this.open(Number(thumb.dataset.index));
+				else if (step) this.#show(this.#index + Number(step.dataset.step));
+				else if (target.closest(".tt-photo-gallery__close")) this.close();
+				// 写真やボタン以外（ビューアの余白）を押したら閉じる
+				else if (target.matches(".tt-photo-gallery__dialog, .tt-photo-gallery__viewer, .tt-photo-gallery__figure")) {
+					this.close();
+				}
+			});
+			this.addEventListener("keydown", (event) => {
+				if (!this.#dialog?.open) return;
+				if (event.key === "ArrowLeft") this.#show(this.#index - 1);
+				if (event.key === "ArrowRight") this.#show(this.#index + 1);
+			});
+			// スマホでは写真を左右にスワイプして移動する
+			this.addEventListener("pointerdown", (event) => {
+				if (event.pointerType === "touch" && (event.target as Element).closest(".tt-photo-gallery__figure")) {
+					this.#swipeStart = { x: event.clientX, y: event.clientY };
+				}
+			});
+			this.addEventListener("pointerup", (event) => {
+				const start = this.#swipeStart;
+				this.#swipeStart = null;
+				if (!start) return;
+				const dx = event.clientX - start.x;
+				const dy = event.clientY - start.y;
+				if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) this.#show(this.#index + (dx < 0 ? 1 : -1));
+			});
+			this.addEventListener("pointercancel", () => {
+				this.#swipeStart = null;
+			});
+		}
+
+		get #dialog() {
+			return this.querySelector<HTMLDialogElement>(".tt-photo-gallery__dialog");
+		}
+
+		get #sources() {
+			return [...this.querySelectorAll<HTMLTemplateElement>(".tt-photo-gallery__source")];
+		}
+
+		open(index: number) {
+			if (!this.#sources.length) return;
+			this.#show(index);
+			this.#dialog?.showModal();
+		}
+
+		close() {
+			this.#dialog?.close();
+		}
+
+		// 端まで行ったら反対側に戻る
+		#show(index: number) {
+			const sources = this.#sources;
+			const dialog = this.#dialog;
+			if (!sources.length || !dialog) return;
+			this.#index = (index + sources.length) % sources.length;
+			const source = sources[this.#index];
+			const image = source.content.querySelector("img")?.cloneNode(true) as HTMLImageElement | undefined;
+			if (image) dialog.querySelector(".tt-photo-gallery__image")?.replaceWith(image);
+			dialog.querySelector(".tt-photo-gallery__caption")!.textContent = source.dataset.caption ?? "";
+			const count = dialog.querySelector(".tt-photo-gallery__count"); // 写真が1枚のときはない
+			if (count) count.textContent = `${this.#index + 1} / ${sources.length}`;
+		}
+	}
+
+	customElements.define("tt-photo-gallery", TtPhotoGallery);
+</script>

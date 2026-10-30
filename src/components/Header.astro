@@ -1,0 +1,95 @@
+---
+/**
+ * サイト共通ヘッダー。ナビ項目は src/data/site.ts から読む。
+ * 画面上部に固定（sticky）され、スクロールすると scrolled 属性が付いて浮いたバーになる。
+ * 900px 未満ではハンバーガーメニューになる（開閉は下の <script> の tt-header 要素が担当）。
+ */
+import { nav } from "../data/site";
+
+interface Props {
+	/** ロゴに出す名前 */
+	name: string;
+	/** ヒーロー画像の上に重ねて表示する（背景透過・白文字。固定はしない） */
+	overlay?: boolean;
+}
+
+const { name, overlay = false } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<tt-header overlay={overlay || undefined}>
+	<div class="tt-header__inner container">
+		<a class="tt-header__logo" href="/">{name}</a>
+		<button class="tt-header__toggle" type="button" aria-expanded="false" aria-controls="global-nav">
+			<span class="visually-hidden">メニュー</span>
+			<span class="tt-header__toggle-icon" aria-hidden="true"></span>
+		</button>
+		<nav class="tt-header__nav theme-dark" id="global-nav" aria-label="グローバルナビゲーション">
+			<ul class="tt-header__nav-list">
+				{
+					nav.map((item) => (
+						<li>
+							<a href={item.href} aria-current={item.href === currentPath ? "page" : undefined}>
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
+</tt-header>
+
+<script>
+	const DESKTOP_QUERY = "(min-width: 900px)";
+
+	class TtHeader extends HTMLElement {
+		#desktop = window.matchMedia(DESKTOP_QUERY);
+
+		constructor() {
+			super();
+			this.addEventListener("click", (event) => {
+				const target = event.target as Element;
+				if (target.closest(".tt-header__toggle")) this.toggleMenu();
+				else if (target.closest(".tt-header__nav a")) this.toggleMenu(false);
+			});
+		}
+
+		#onKeydown = (event: KeyboardEvent) => {
+			if (event.key === "Escape" && this.hasAttribute("menu-open")) {
+				this.toggleMenu(false);
+				this.querySelector<HTMLElement>(".tt-header__toggle")?.focus();
+			}
+		};
+
+		#onBreakpointChange = (event: MediaQueryListEvent) => {
+			if (event.matches) this.toggleMenu(false);
+		};
+
+		#onScroll = () => {
+			this.toggleAttribute("scrolled", window.scrollY > 8);
+		};
+
+		connectedCallback() {
+			document.addEventListener("keydown", this.#onKeydown);
+			this.#desktop.addEventListener("change", this.#onBreakpointChange);
+			window.addEventListener("scroll", this.#onScroll, { passive: true });
+			this.#onScroll();
+		}
+
+		disconnectedCallback() {
+			document.removeEventListener("keydown", this.#onKeydown);
+			this.#desktop.removeEventListener("change", this.#onBreakpointChange);
+			window.removeEventListener("scroll", this.#onScroll);
+			this.toggleMenu(false);
+		}
+
+		toggleMenu(force?: boolean) {
+			const open = this.toggleAttribute("menu-open", force);
+			this.querySelector(".tt-header__toggle")?.setAttribute("aria-expanded", String(open));
+			document.body.classList.toggle("is-scroll-locked", open);
+		}
+	}
+
+	customElements.define("tt-header", TtHeader);
+</script>

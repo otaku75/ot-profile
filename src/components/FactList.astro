@@ -1,0 +1,23 @@
+---
+/**
+ * ラベルと値の一覧（プロフィールの基本情報など）。
+ */
+interface Props {
+	items: { label: string; value: string }[];
+}
+
+const { items, ...attrs } = Astro.props;
+---
+
+<tt-fact-list {...attrs}>
+	<dl class="tt-fact-list__list">
+		{
+			items.map((item) => (
+				<div class="tt-fact-list__row">
+					<dt class="tt-fact-list__label">{item.label}</dt>
+					<dd class="tt-fact-list__value">{item.value}</dd>
+				</div>
+			))
+		}
+	</dl>
+</tt-fact-list>

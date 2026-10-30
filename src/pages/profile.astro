@@ -1,0 +1,103 @@
+---
+// プロフィールページ（ゲームのステータス画面風）
+import { Image, PortableText } from "emdash/ui";
+import EquipmentList from "../components/EquipmentList.astro";
+import FactList from "../components/FactList.astro";
+import PageHeader from "../components/PageHeader.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import StatList from "../components/StatList.astro";
+import Timeline from "../components/Timeline.astro";
+import Base from "../layouts/Base.astro";
+import { getProfile } from "../lib/content";
+
+const profile = (await getProfile())?.data;
+// 繰り返し項目は未入力だと undefined になるので、空の配列にそろえる（空のセクションは表示しない）
+const facts = profile?.facts ?? [];
+const abilities = profile?.abilities ?? [];
+const equipment = profile?.equipment ?? [];
+const history = profile?.history ?? [];
+---
+
+<Base title="プロフィール">
+	<main>
+		<section class="section section--page-top" id="status">
+			<div class="container">
+				<PageHeader en="Profile" ja="プロフィール" />
+				<div class="split split--media">
+					{
+						profile?.photo && (
+							<Image
+								image={profile.photo}
+								class="photo"
+								alt={profile.photo.alt || profile.name_ja}
+								sizes="(min-width: 1200px) 440px, (min-width: 600px) 40vw, 100vw"
+							/>
+						)
+					}
+					<div class="flow flow--lg">
+						<div class="panel flow flow--md">
+							<div class="flow flow--sm">
+								{profile?.label && <p class="tag tag--primary">{profile.label}</p>}
+								<h2 class="display-title">{profile?.name_en}</h2>
+								<p class="caption">{profile?.name_ja}</p>
+							</div>
+							{
+								facts.length > 0 && (
+									<div class="flow flow--sm">
+										<h3 class="eyebrow">Status</h3>
+										<FactList items={facts} />
+									</div>
+								)
+							}
+						</div>
+						{
+							profile?.bio && (
+								<div class="flow">
+									<PortableText value={profile.bio} />
+								</div>
+							)
+						}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{
+			abilities.length > 0 && (
+				<section class="section section--muted" id="ability">
+					<div class="container flow flow--md">
+						<SectionHeading en="Ability" ja="能力値" />
+						<div class="panel">
+							<StatList items={abilities} max={10} />
+						</div>
+						<p class="caption">※ 10段階の自己評価です</p>
+					</div>
+				</section>
+			)
+		}
+
+		{
+			equipment.length > 0 && (
+				<section class="section" id="equipment">
+					<div class="container">
+						<SectionHeading en="Equipment" ja="そうび" />
+						<EquipmentList items={equipment} />
+					</div>
+				</section>
+			)
+		}
+
+		{
+			history.length > 0 && (
+				<section class="section section--muted" id="history">
+					<div class="container">
+						<SectionHeading en="History" ja="卓球歴" />
+						<div class="panel">
+							<Timeline items={history} order="asc" />
+						</div>
+					</div>
+				</section>
+			)
+		}
+	</main>
+</Base>

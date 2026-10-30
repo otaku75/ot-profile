@@ -1,0 +1,22 @@
+---
+/**
+ * セクション見出し。英字の大見出し＋日本語の小見出し。
+ */
+interface Props {
+	en: string;
+	ja: string;
+	/** 見出しレベル（1〜6。既定 2） */
+	level?: 1 | 2 | 3 | 4 | 5 | 6;
+	align?: "center";
+}
+
+const { en, ja, level = 2, align } = Astro.props;
+const Heading = `h${level}` as const;
+---
+
+<tt-section-heading align={align}>
+	<Heading class="tt-section-heading__title">
+		<span class="tt-section-heading__en">{en}</span>
+		<span class="tt-section-heading__ja">{ja}</span>
+	</Heading>
+</tt-section-heading>

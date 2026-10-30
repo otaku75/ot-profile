@@ -1,0 +1,21 @@
+---
+/**
+ * 下層ページの見出し。メニュー（トップページ）へ戻るボタンと、h1 の見出しを表示する。
+ */
+import SectionHeading from "./SectionHeading.astro";
+
+interface Props {
+	en: string;
+	ja: string;
+}
+
+const { en, ja } = Astro.props;
+---
+
+<tt-page-header>
+	<a class="tt-page-header__back button button--sm button--secondary" href="/">
+		<span class="tt-page-header__arrow" aria-hidden="true"></span>
+		MENU<span class="visually-hidden">（トップページ）へ戻る</span>
+	</a>
+	<SectionHeading en={en} ja={ja} level={1} />
+</tt-page-header>

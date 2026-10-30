@@ -1,0 +1,52 @@
+---
+/**
+ * ページ上部のメインビジュアル。
+ *
+ * 既定（全面）: 画像を画面幅いっぱいに表示する。
+ *   900px 以上は画像の上に文字を重ね、900px 未満は画像の下に文字を置く。
+ * framed: ドット柄の上に枠付きの画像を置き、名前はネームプレート（.panel）で左下に重ねる。
+ * 画像の表示位置は、管理画面のメディアで設定した「フォーカルポイント」に従う。
+ */
+import type { ImageValue } from "emdash";
+import { Image } from "emdash/ui";
+
+interface Props {
+	framed?: boolean;
+	image?: ImageValue | null;
+	eyebrow?: string | null;
+	heading: string;
+	subheading?: string | null;
+}
+
+const { framed = false, image, eyebrow, heading, subheading } = Astro.props;
+---
+
+<tt-hero framed={framed || undefined}>
+	{
+		framed ? (
+			<div class="tt-hero__inner container">
+				<div class="tt-hero__frame">
+					{image ? <Image image={image} class="tt-hero__image" priority /> : <div class="tt-hero__image bg-dots" />}
+				</div>
+				<div class="tt-hero__plate panel">
+					<div class="tt-hero__content">
+						{eyebrow && <p class="tt-hero__eyebrow">{eyebrow}</p>}
+						<h1 class="tt-hero__heading">{heading}</h1>
+						{subheading && <p class="tt-hero__subheading">{subheading}</p>}
+					</div>
+				</div>
+			</div>
+		) : (
+			<>
+				<div class="tt-hero__media">{image && <Image image={image} class="tt-hero__image" priority />}</div>
+				<div class="tt-hero__body theme-dark">
+					<div class="tt-hero__content container">
+						{eyebrow && <p class="tt-hero__eyebrow">{eyebrow}</p>}
+						<h1 class="tt-hero__heading">{heading}</h1>
+						{subheading && <p class="tt-hero__subheading">{subheading}</p>}
+					</div>
+				</div>
+			</>
+		)
+	}
+</tt-hero>

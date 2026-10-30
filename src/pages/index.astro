@@ -1,0 +1,37 @@
+---
+// トップページ（タイトル画面）。ヒーローと、各ページへのメニューだけを置く
+import Hero from "../components/Hero.astro";
+import Menu from "../components/Menu.astro";
+import { nav } from "../data/site";
+import Base from "../layouts/Base.astro";
+import { formatDate, getNews, getProfile, getResults, getSponsors } from "../lib/content";
+
+const [profile, results, news, sponsors] = await Promise.all([getProfile(), getResults(), getNews(), getSponsors()]);
+
+// メニューの各項目に、最新の戦績・お知らせやスポンサー名をプレビューとして添える（空のものは説明文）
+const [latestResult] = results;
+const [latestNews] = news;
+const previews: Record<string, string | undefined> = {
+	results: latestResult && `最新: ${latestResult.title} ${latestResult.badge ?? ""}`.trim(),
+	news: latestNews && `${formatDate(latestNews.date)} ${latestNews.title}`,
+	sponsor: sponsors.map((sponsor) => sponsor.title).join("・"),
+};
+const items = nav.map((item) => ({ ...item, preview: previews[item.id] || item.description }));
+---
+
+<Base>
+	<main>
+		<Hero
+			framed
+			image={profile?.data.hero_image}
+			eyebrow={profile?.data.label}
+			heading={profile?.data.name_en ?? ""}
+			subheading={profile?.data.name_ja}
+		/>
+		<nav class="section section--flush-top" aria-label="メニュー">
+			<div class="container">
+				<Menu items={items} />
+			</div>
+		</nav>
+	</main>
+</Base>

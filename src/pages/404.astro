@@ -1,0 +1,44 @@
+---
+// 存在しない URL のときに表示するページ（GAME OVER 風）
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="GAME OVER（404）" bodyClass="theme-dark" footer={false} noindex>
+	<main class="section section--fill">
+		<div class="container text-center flow flow--md">
+			<div class="bounce-ball" aria-hidden="true"></div>
+			<h1 class="display-title display-title--xl">Game Over</h1>
+			<p class="tag tag--primary">404 Not Found</p>
+			<p>お探しのページは見つかりませんでした。<br />URL が間違っているか、ページが移動・削除された可能性があります。</p>
+			<div class="flow flow--sm">
+				<p class="display-title blink">Continue?</p>
+				<ul class="choice-list">
+					<li><a href="/">Yes<span class="choice-list__note">メニューへ</span></a></li>
+					<li><a href="/" data-back>No<span class="choice-list__note">前のページへ</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</main>
+</Base>
+
+<script>
+	// 選択肢をゲームのように ↑↓ キーで選べるようにする
+	const choices = [...document.querySelectorAll<HTMLAnchorElement>(".choice-list a")];
+
+	// 「NO」はサイト内から来たときだけ前のページへ戻る（それ以外は href のとおりトップへ）
+	document.querySelector("[data-back]")?.addEventListener("click", (event) => {
+		if (document.referrer && new URL(document.referrer).origin === location.origin) {
+			event.preventDefault();
+			history.back();
+		}
+	});
+
+	// 何も選んでいないときは先頭（YES）が選ばれている扱いにする
+	document.addEventListener("keydown", (event) => {
+		if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+		event.preventDefault();
+		const current = Math.max(choices.indexOf(document.activeElement as HTMLAnchorElement), 0);
+		const step = event.key === "ArrowDown" ? 1 : -1;
+		choices[(current + step + choices.length) % choices.length].focus();
+	});
+</script>

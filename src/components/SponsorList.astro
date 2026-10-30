@@ -1,0 +1,58 @@
+---
+/**
+ * スポンサーの一覧。ロゴ（なければ社名）・紹介文・公式サイトへのリンクをカードで表示する。
+ * カードの幅が広いときは、ロゴと文章を横に並べる。
+ */
+import type { ImageValue } from "emdash";
+import { Image } from "emdash/ui";
+
+interface Props {
+	sponsors: {
+		title: string;
+		description?: string | null;
+		url?: string | null;
+		logo?: ImageValue | null;
+		since?: string | null;
+	}[];
+	/** 社名の見出しレベル（既定 2） */
+	level?: 2 | 3 | 4 | 5 | 6;
+}
+
+const { sponsors, level = 2 } = Astro.props;
+const Heading = `h${level}` as const;
+---
+
+<tt-sponsor-list>
+	<ul class="tt-sponsor-list__list">
+		{
+			sponsors.map((sponsor) => (
+				<li class="tt-sponsor-list__item">
+					<article class="tt-sponsor-list__card panel">
+						<div class="tt-sponsor-list__logo bg-dots">
+							{sponsor.logo ? (
+								<Image image={sponsor.logo} alt={sponsor.title} />
+							) : (
+								<span class="tt-sponsor-list__logo-text" aria-hidden="true">
+									{sponsor.title}
+								</span>
+							)}
+						</div>
+						<div class="tt-sponsor-list__body">
+							{sponsor.since && <p class="tag tag--primary">Since {sponsor.since}</p>}
+							<Heading class="tt-sponsor-list__name">{sponsor.title}</Heading>
+							{sponsor.description && <p class="tt-sponsor-list__description">{sponsor.description}</p>}
+							{sponsor.url && (
+								<p>
+									<a class="button button--sm button--secondary" href={sponsor.url} target="_blank" rel="noopener">
+										公式サイト<span class="tt-sponsor-list__external" aria-hidden="true" />
+										<span class="visually-hidden">（新しいタブで開きます）</span>
+									</a>
+								</p>
+							)}
+						</div>
+					</article>
+				</li>
+			))
+		}
+	</ul>
+</tt-sponsor-list>

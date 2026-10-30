@@ -1,0 +1,30 @@
+---
+// スポンサーページ
+import PageHeader from "../components/PageHeader.astro";
+import SponsorList from "../components/SponsorList.astro";
+import Base from "../layouts/Base.astro";
+import { getSponsors } from "../lib/content";
+
+const sponsors = await getSponsors();
+---
+
+<Base title="スポンサー">
+	<main>
+		<section class="section section--page-top" id="sponsor">
+			<div class="container flow flow--lg">
+				<PageHeader en="Sponsor" ja="スポンサー" />
+				<p class="measure">
+					活動を支えてくださっている企業・団体のみなさまです。いつも応援いただき、ありがとうございます。
+				</p>
+				<SponsorList sponsors={sponsors} />
+			</div>
+		</section>
+		<section class="section section--muted" id="support">
+			<div class="container container--narrow text-center flow flow--md">
+				<h2 class="display-title">Join the team</h2>
+				<p>スポンサー・ご支援に関するご相談も受け付けています。<br />お気軽にお問い合わせください。</p>
+				<p><a class="button" href="/contact">お問い合わせへ</a></p>
+			</div>
+		</section>
+	</main>
+</Base>
