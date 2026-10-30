@@ -6,10 +6,11 @@ const DESKTOP_QUERY = '(min-width: 900px)';
 
 /**
  * サイト共通ヘッダー。ナビ項目は js/data/site.js から読む。
+ * 画面上部に固定（sticky）され、スクロールすると scrolled 属性が付いて浮いたバーになる。
  * 900px 未満ではハンバーガーメニューになる。
  *
  * 属性:
- *   overlay … ヒーロー画像の上に重ねて表示する（背景透過・白文字）
+ *   overlay … ヒーロー画像の上に重ねて表示する（背景透過・白文字。固定はしない）
  */
 class TtHeader extends BaseElement {
   #desktop = window.matchMedia(DESKTOP_QUERY);
@@ -33,16 +34,23 @@ class TtHeader extends BaseElement {
     if (event.matches) this.toggleMenu(false);
   };
 
+  #onScroll = () => {
+    this.toggleAttribute('scrolled', window.scrollY > 8);
+  };
+
   connectedCallback() {
     super.connectedCallback();
     document.addEventListener('keydown', this.#onKeydown);
     this.#desktop.addEventListener('change', this.#onBreakpointChange);
+    window.addEventListener('scroll', this.#onScroll, { passive: true });
+    this.#onScroll();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     document.removeEventListener('keydown', this.#onKeydown);
     this.#desktop.removeEventListener('change', this.#onBreakpointChange);
+    window.removeEventListener('scroll', this.#onScroll);
     this.toggleMenu(false);
   }
 

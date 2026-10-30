@@ -1,8 +1,13 @@
-/* 既定: 背景を持たず、ページのドット柄の上に置く */
+/* 既定: 画面上部に固定。ページ最上部では背景を持たずドット柄の上に置き、
+   スクロールすると（[scrolled]）浮いたバーを表示する */
 tt-header {
   display: block;
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: var(--z-header);
+
+  /* 浮いたバーがロゴ・ナビより左右にはみ出す幅（画面端に付かないよう余白の内側に収める） */
+  --bar-bleed: min(var(--space-5), var(--container-padding) - var(--space-2));
 }
 
 /* overlay: 全面のヒーロー画像の上に重ねる（白文字） */
@@ -17,10 +22,34 @@ tt-header[menu-open] {
 }
 
 .tt-header__inner {
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: var(--header-height);
+}
+
+/* 浮いたバー。レイアウトに影響しない疑似要素で描くので、表示してもロゴやナビは動かない */
+.tt-header__inner::before {
+  content: "";
+  position: absolute;
+  inset: var(--space-2) calc(var(--bar-bleed) * -1);
+  z-index: -1;
+  border: var(--outline-width) solid var(--color-outline);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface);
+  box-shadow: 4px 4px 0 var(--color-outline);
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  transition:
+    opacity var(--duration-base) var(--ease),
+    transform var(--duration-base) var(--ease);
+}
+
+tt-header[scrolled]:not([overlay]) .tt-header__inner::before {
+  opacity: 1;
+  transform: none;
 }
 
 .tt-header__logo {
