@@ -20,6 +20,11 @@
   background-color: var(--color-bg-subtle);
 }
 
+/* 下層ページの最初のセクション（ヘッダー直下なので上の余白を詰める） */
+.section--page-top {
+  padding-top: var(--space-6);
+}
+
 /* 2カラム（900px 未満は縦積み） */
 .split {
   display: grid;

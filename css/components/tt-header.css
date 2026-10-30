@@ -122,6 +122,11 @@ tt-header[menu-open] .tt-header__nav {
   text-transform: uppercase;
 }
 
+/* 現在のページ（モバイルの全画面メニューでは文字色で示す） */
+.tt-header__nav-list a[aria-current="page"] {
+  color: var(--color-accent-text);
+}
+
 @media (min-width: 900px) {
   .tt-header__toggle {
     display: none;
@@ -162,7 +167,13 @@ tt-header[menu-open] .tt-header__nav {
     transition: transform var(--duration-base) var(--ease);
   }
 
-  .tt-header__nav-list a:hover::after {
+  .tt-header__nav-list a:hover::after,
+  .tt-header__nav-list a[aria-current="page"]::after {
     transform: scaleX(1);
+  }
+
+  /* 横並びのときは下線で示すので文字色は変えない */
+  .tt-header__nav-list a[aria-current="page"] {
+    color: inherit;
   }
 }

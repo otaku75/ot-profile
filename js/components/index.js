@@ -4,5 +4,7 @@ import './tt-footer.js';
 import './tt-hero.js';
 import './tt-section-heading.js';
 import './tt-fact-list.js';
-import './tt-result-list.js';
+import './tt-timeline.js';
+import './tt-stat-list.js';
+import './tt-equipment-list.js';
 import './tt-news-list.js';

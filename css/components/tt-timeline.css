@@ -1,15 +1,15 @@
-tt-result-list {
+tt-timeline {
   display: block;
 
   --line-width: 4px;
 }
 
 /* モバイル: 年 → その下に点線つきの一覧 */
-.tt-result-list__group + .tt-result-list__group {
+.tt-timeline__group + .tt-timeline__group {
   margin-top: var(--space-6);
 }
 
-.tt-result-list__year {
+.tt-timeline__year {
   margin-bottom: var(--space-3);
   font-family: var(--font-display);
   font-size: 2rem;
@@ -19,11 +19,11 @@ tt-result-list {
 }
 
 /* 時系列の線は丸いドットの点線 */
-.tt-result-list__entries {
+.tt-timeline__entries {
   border-left: var(--line-width) dotted var(--color-border-strong);
 }
 
-.tt-result-list__entry {
+.tt-timeline__entry {
   --dot-size: 16px;
   --dot-top: calc(var(--space-3) + 0.85rem);
 
@@ -31,7 +31,7 @@ tt-result-list {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   grid-template-areas:
-    "date result"
+    "date badge"
     "body body";
   align-items: center;
   gap: var(--space-2) var(--space-3);
@@ -39,7 +39,7 @@ tt-result-list {
 }
 
 /* 線上のコイン */
-.tt-result-list__entry::before {
+.tt-timeline__entry::before {
   content: "";
   position: absolute;
   top: calc(var(--dot-top) - var(--dot-size) / 2);
@@ -51,14 +51,14 @@ tt-result-list {
   background-color: var(--color-surface);
 }
 
-.tt-result-list__entry.is-highlight::before {
+.tt-timeline__entry.is-highlight::before {
   --dot-size: 22px;
   border-color: var(--color-outline);
   background-color: var(--color-highlight);
   box-shadow: inset -3px -3px 0 rgb(0 0 0 / 0.14);
 }
 
-.tt-result-list__date {
+.tt-timeline__date {
   grid-area: date;
   font-family: var(--font-display);
   font-size: var(--font-size-lg);
@@ -68,24 +68,29 @@ tt-result-list {
   color: var(--color-text-muted);
 }
 
-.tt-result-list__body {
+/* 年だけの日付は月日がないので詰める（日付行とタイトル行はほぼ同じ高さなのでコインの位置は揃う） */
+.tt-timeline__date:empty {
+  display: none;
+}
+
+.tt-timeline__body {
   grid-area: body;
 }
 
-.tt-result-list__tournament {
+.tt-timeline__title {
   font-weight: 700;
   line-height: 1.6;
 }
 
-.tt-result-list__event {
+.tt-timeline__note {
   font-size: var(--font-size-sm);
   line-height: 1.6;
   color: var(--color-text-muted);
 }
 
-/* 結果はバッジ風。優勝などは金色 */
-.tt-result-list__result {
-  grid-area: result;
+/* バッジ。highlight は金色 */
+.tt-timeline__badge {
+  grid-area: badge;
   justify-self: start;
   padding: 0.1em 0.9em;
   border: 2px solid var(--color-outline);
@@ -97,43 +102,49 @@ tt-result-list {
   text-align: center;
 }
 
-.tt-result-list__entry.is-highlight .tt-result-list__result {
+.tt-timeline__entry.is-highlight .tt-timeline__badge {
   background-color: var(--color-highlight);
 }
 
 /* 600px 以上: 左に年、右に1本の点線でつながる一覧 */
 @media (min-width: 600px) {
-  .tt-result-list__group {
+  .tt-timeline__group {
     display: grid;
     grid-template-columns: 7rem minmax(0, 1fr);
   }
 
-  .tt-result-list__group + .tt-result-list__group {
+  .tt-timeline__group + .tt-timeline__group {
     margin-top: 0;
   }
 
-  .tt-result-list__year {
+  .tt-timeline__year {
     margin-bottom: 0;
     padding-top: var(--space-4);
     font-size: 2.25rem;
   }
 
   /* 年の区切りは点線の内側の余白で作り、線を途切れさせない */
-  .tt-result-list__group:not(:last-child) .tt-result-list__entries {
+  .tt-timeline__group:not(:last-child) .tt-timeline__entries {
     padding-bottom: var(--space-6);
   }
 
-  .tt-result-list__entry {
+  .tt-timeline__entry {
     --dot-top: calc(var(--space-4) + 0.85rem);
 
     grid-template-columns: 3.5rem 6.5rem minmax(0, 1fr);
-    grid-template-areas: "date result body";
+    grid-template-areas: "date badge body";
     align-items: baseline;
     column-gap: var(--space-5);
     padding: var(--space-4) 0 var(--space-4) var(--space-6);
   }
 
-  .tt-result-list__result {
+  /* バッジを使わない一覧ではバッジの列を詰める */
+  .tt-timeline__groups--no-badge .tt-timeline__entry {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    grid-template-areas: "date body";
+  }
+
+  .tt-timeline__badge {
     justify-self: stretch;
   }
 }

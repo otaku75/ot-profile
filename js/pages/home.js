@@ -9,6 +9,6 @@ const bind = (selector, data) => {
 };
 
 bind('#profile-facts', profile);
-bind('#equipment-facts', equipment);
-bind('#results-list', results);
+bind('#equipment-facts', equipment.map(({ slot, name }) => ({ label: slot, value: name })));
+bind('#results-timeline', results);
 bind('#news-list', news);

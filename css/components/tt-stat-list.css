@@ -1,0 +1,82 @@
+tt-stat-list {
+  display: block;
+
+  --pip-size: 16px;
+  --pip-gap: 6px;
+}
+
+.tt-stat-list__list {
+  display: grid;
+  gap: var(--space-5) var(--space-8);
+}
+
+/* モバイル: ラベルと数値の下にドット */
+.tt-stat-list__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "label value"
+    "meter meter";
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.tt-stat-list__label {
+  grid-area: label;
+  font-weight: 700;
+}
+
+.tt-stat-list__meter {
+  grid-area: meter;
+  display: flex;
+  gap: var(--pip-gap);
+}
+
+.tt-stat-list__pip {
+  width: var(--pip-size);
+  height: var(--pip-size);
+  border: 2px solid var(--color-border-strong);
+  border-radius: 50%;
+  transition:
+    background-color 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    transform 0.3s var(--ease);
+  transition-delay: calc(var(--i) * 50ms);
+}
+
+.tt-stat-list__pip.is-filled {
+  border-color: var(--color-outline);
+  background-color: var(--color-primary);
+}
+
+/* 画面に入る前は空のドットにしておき、revealed で順に埋める */
+tt-stat-list:not([revealed]) .tt-stat-list__pip.is-filled {
+  border-color: var(--color-border-strong);
+  background-color: transparent;
+  transform: scale(0.6);
+}
+
+.tt-stat-list__value {
+  grid-area: value;
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  line-height: 1;
+  text-align: right;
+}
+
+/* 600px 以上: ラベル・ドット・数値を1行に */
+@media (min-width: 600px) {
+  .tt-stat-list__item {
+    grid-template-columns: 7.5em auto 1.5em;
+    grid-template-areas: "label meter value";
+    justify-content: start;
+  }
+}
+
+/* 900px 以上: 2列 */
+@media (min-width: 900px) {
+  .tt-stat-list__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

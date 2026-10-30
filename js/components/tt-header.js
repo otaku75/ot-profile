@@ -62,12 +62,20 @@ class TtHeader extends BaseElement {
         </button>
         <nav class="tt-header__nav theme-dark" id="global-nav" aria-label="グローバルナビゲーション">
           <ul class="tt-header__nav-list">
-            ${site.nav.map((item) => html`<li><a href="${item.href}">${item.label}</a></li>`)}
+            ${site.nav.map((item) => html`
+              <li><a href="${item.href}" ${isCurrentPage(item.href) && html`aria-current="page"`}>${item.label}</a></li>
+            `)}
           </ul>
         </nav>
       </div>
     `;
   }
+}
+
+// ページ内アンカー（'./#results' など）は現在地として扱わない
+function isCurrentPage(href) {
+  const url = new URL(href, location.href);
+  return !url.hash && url.pathname === location.pathname;
 }
 
 customElements.define('tt-header', TtHeader);

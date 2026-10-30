@@ -23,13 +23,15 @@ python3 -m http.server 8000   # http://localhost:8000
 
 ### ページの組み立て
 
-- 各HTMLページは `css/main.css`（全共通CSSのエントリ）と、ページ用スクリプト `js/pages/<page>.js` を1つずつ読み込む。
+- ページはルート直下のHTML（`index.html` トップ / `profile.html` プロフィール）。各ページは `css/main.css`（全共通CSSのエントリ）と、ページ用スクリプト `js/pages/<page>.js` を1つずつ読み込む。
 - ページ用スクリプトは最初に `js/components/index.js`（全コンポーネントの登録）を import し、その後 `js/data/` のデータを各コンポーネントの `data` プロパティに代入する。import 順により define 済みの要素に代入されることが前提なので、この順序を崩さない。
-- ヘッダー・フッターは `js/data/site.js`（選手名・ナビ・SNS）を直接参照する。ナビ項目は現在トップページ内アンカー（`#profile` など）で、下層ページを作ったらページへのリンクに変える。
+- ヘッダー・フッターは `js/data/site.js`（選手名・ナビ・SNS）を直接参照する。ナビの href は下層ページなら `profile.html`、トップページ内のセクションなら `./#results` の形で書く（どのページからでもトップのセクションへ飛べるように）。`tt-header` はハッシュのないリンクが現在のページと一致すると `aria-current="page"` を付ける。
+- 同じデータを複数ページで使う（例: `js/data/profile.js` はトップとプロフィールの両方）。形が合わない場合はデータを複製せず、ページ用スクリプトで変換して渡す（`home.js` の用具一覧を参照）。
 
 ### コンポーネント（`js/components/`）
 
-- Custom Elements。タグ名は `tt-` プレフィックスで、JS/CSS のファイル名もタグ名と揃える（`tt-result-list` → `js/components/tt-result-list.js` + `css/components/tt-result-list.css`）。
+- Custom Elements。タグ名は `tt-` プレフィックスで、JS/CSS のファイル名もタグ名と揃える（`tt-timeline` → `js/components/tt-timeline.js` + `css/components/tt-timeline.css`）。
+- 用途を限定しない汎用的なデータ形にして使い回す（例: `tt-timeline` は戦績と卓球歴の両方で使う）。
 - すべて `BaseElement`（`base-element.js`）を継承し、`render()` が返したHTMLを Light DOM の innerHTML に描画する。Shadow DOM は使わない。
 - 入力は、文字列なら属性（`static observedAttributes` に列挙すると変更時に再描画）、配列・オブジェクトなら `data` プロパティ。各コンポーネント先頭の JSDoc に属性と data の形を書く。
 - テンプレートは `js/utils/html.js` の `html` タグ付きテンプレートで書く。埋め込み値は自動エスケープされ、ネストした `html` と配列はそのまま展開される。生文字列を連結して innerHTML に入れない。
@@ -42,7 +44,7 @@ python3 -m http.server 8000   # http://localhost:8000
 - `css/main.css` が `@import` で tokens → base → layout → components の順に読み込む。
 - 色・余白・フォントサイズなどは `css/tokens.css` のカスタムプロパティを使う。色はセマンティックトークン（`--color-text`, `--color-border` など）経由で指定する。
 - ダーク配色は `.theme-dark` クラスがセマンティックトークンを上書きする仕組み。コンポーネントがトークン経由で色を指定していれば、暗いセクション内でも自動で追従する。
-- 写真以外の背景はドット柄にする。`css/base.css` で `body` / `.section--muted` / `.theme-dark` に敷いているので、背景色を持つ面を新しく作るときは同じ柄を敷き、写真の上では `background: none` で消す（`tt-hero` 参照）。
+- 写真以外の背景はドット柄にする。`css/base.css` で `body` / `.section--muted` / `.theme-dark` / `.bg-dots` に敷いているので、背景色を持つ面を新しく作るときは `.bg-dots` などで同じ柄を敷き、写真の上では `background: none` で消す（`tt-hero` 参照）。
 - ゲーム風の見た目は、太い輪郭線（`--outline-width`）とずらした影（`--shadow-offset`）の組み合わせで統一する（`.panel`, `.button`, `.photo`）。
 - クラス名はタグ名をブロックにした BEM（`.tt-header__nav`）。状態はホストの属性（`tt-header[menu-open]`）か `is-*` クラスで表す。
 - レイアウト用ユーティリティ（`.container`, `.section`, `.split`, `.flow` など）は `css/layout.css`。

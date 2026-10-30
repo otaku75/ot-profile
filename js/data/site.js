@@ -6,11 +6,12 @@ export const site = {
     ja: '太田　輝',
     en: 'Hikaru Ota',
   },
+  // 下層ページは 'profile.html'、トップページ内のセクションは './#results' のように書く
   nav: [
-    { label: 'Profile', href: '#profile' },
-    { label: 'Results', href: '#results' },
-    { label: 'News', href: '#news' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Profile', href: 'profile.html' },
+    { label: 'Results', href: './#results' },
+    { label: 'News', href: './#news' },
+    { label: 'Contact', href: './#contact' },
   ],
   social: [
     { label: 'Instagram', url: '#' },

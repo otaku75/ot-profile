@@ -13,3 +13,11 @@
   white-space: nowrap;
   color: var(--color-text);
 }
+
+/* 目立たせたいラベル（グリーンのバッジ） */
+.tag--primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.08em;
+}
