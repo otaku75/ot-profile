@@ -1,22 +1,31 @@
 ---
 // スポンサーページ。内容は content/sponsor.yaml
+import ComingSoon from "../components/ComingSoon.astro";
 import PageHeader from "../components/PageHeader.astro";
 import SponsorList from "../components/SponsorList.astro";
 import Base from "../layouts/Base.astro";
-import { getSponsors } from "../lib/content";
+import { getSponsors, isComingSoon } from "../lib/content";
 
-const sponsors = await getSponsors();
+const [sponsors, comingSoon] = await Promise.all([getSponsors(), isComingSoon("sponsor")]);
 ---
 
-<Base title="スポンサー">
+<Base title="スポンサー" noindex={comingSoon}>
 	<main>
 		<section class="section section--page-top" id="sponsor">
 			<div class="container flow flow--lg">
 				<PageHeader en="Sponsor" ja="スポンサー" />
-				<p class="measure">
-					活動を支えてくださっている企業・団体のみなさまです。いつも応援いただき、ありがとうございます。
-				</p>
-				<SponsorList sponsors={sponsors} />
+				{
+					comingSoon ? (
+						<ComingSoon />
+					) : (
+						<>
+							<p class="measure">
+								活動を支えてくださっている企業・団体のみなさまです。いつも応援いただき、ありがとうございます。
+							</p>
+							<SponsorList sponsors={sponsors} />
+						</>
+					)
+				}
 			</div>
 		</section>
 		<section class="section section--muted" id="support">

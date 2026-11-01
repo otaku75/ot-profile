@@ -1,21 +1,28 @@
 ---
 // 戦績ページ。内容は content/results.yaml
+import ComingSoon from "../components/ComingSoon.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Timeline from "../components/Timeline.astro";
 import Base from "../layouts/Base.astro";
-import { getResults } from "../lib/content";
+import { getResults, isComingSoon } from "../lib/content";
 
-const results = await getResults();
+const [results, comingSoon] = await Promise.all([getResults(), isComingSoon("results")]);
 ---
 
-<Base title="戦績">
+<Base title="戦績" noindex={comingSoon}>
 	<main>
 		<section class="section section--page-top" id="results">
 			<div class="container">
 				<PageHeader en="Results" ja="戦績" />
-				<div class="panel">
-					<Timeline items={results} />
-				</div>
+				{
+					comingSoon ? (
+						<ComingSoon />
+					) : (
+						<div class="panel">
+							<Timeline items={results} />
+						</div>
+					)
+				}
 			</div>
 		</section>
 	</main>

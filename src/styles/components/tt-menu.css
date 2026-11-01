@@ -102,3 +102,24 @@ tt-menu {
   line-height: 1.7;
   color: var(--color-text-muted);
 }
+
+/* 準備中のページ。まだ遊べないステージのように、点線の枠で薄く表示する */
+.tt-menu__card.is-coming-soon {
+  border-style: dashed;
+  background-color: var(--color-bg-subtle);
+}
+
+.tt-menu__card.is-coming-soon :is(.tt-menu__label, .tt-menu__ja) {
+  color: var(--color-text-muted);
+}
+
+.tt-menu__card.is-coming-soon .tt-menu__arrow {
+  background-color: var(--color-surface);
+}
+
+.tt-menu__soon {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}

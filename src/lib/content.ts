@@ -41,6 +41,33 @@ export async function getSponsors() {
 	return (await getFile("sponsor")).data;
 }
 
+/**
+ * 中身がまだなく「準備中」と表示するページ（src/data/site.ts の nav の id）。
+ * そのページのファイルの一覧を空にする（お問い合わせはメールアドレスを空にする）と準備中になる
+ */
+export async function getComingSoonPages() {
+	const [results, news, gallery, sponsors, site] = await Promise.all([
+		getResults(),
+		getNews(),
+		getGallery(),
+		getSponsors(),
+		getSite(),
+	]);
+	const empty: Record<string, boolean> = {
+		results: results.length === 0,
+		news: news.length === 0,
+		gallery: gallery.photos.length === 0 && gallery.videos.length === 0,
+		sponsor: sponsors.length === 0,
+		contact: !site.contact_email,
+	};
+	return new Set(Object.keys(empty).filter((id) => empty[id]));
+}
+
+/** そのページが「準備中」か（id は src/data/site.ts の nav の id） */
+export async function isComingSoon(id: string) {
+	return (await getComingSoonPages()).has(id);
+}
+
 /** '2026-08-24' → '2026.08.24' */
 export function formatDate(date: string) {
 	return date.replaceAll("-", ".");

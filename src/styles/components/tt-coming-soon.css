@@ -1,0 +1,17 @@
+tt-coming-soon {
+  display: block;
+}
+
+.tt-coming-soon__body {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-5);
+  padding-block: var(--space-7);
+  text-align: center;
+  text-wrap: balance;
+  word-break: auto-phrase;
+}
+
+.tt-coming-soon__message {
+  color: var(--color-text-muted);
+}

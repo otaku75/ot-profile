@@ -1,9 +1,10 @@
 ---
 /**
  * ゲームのメニュー画面風のリンクカード一覧。各カードは .panel で、押すと沈む。
+ * comingSoon の項目は、まだ遊べないステージのように点線の枠で薄く表示し、preview の代わりに「Coming soon」を出す。
  */
 interface Props {
-	items: { href: string; label: string; ja?: string; preview?: string }[];
+	items: { href: string; label: string; ja?: string; preview?: string; comingSoon?: boolean }[];
 }
 
 const { items } = Astro.props;
@@ -14,13 +15,17 @@ const { items } = Astro.props;
 		{
 			items.map((item) => (
 				<li>
-					<a class="tt-menu__card panel" href={item.href}>
+					<a class:list={["tt-menu__card panel", { "is-coming-soon": item.comingSoon }]} href={item.href}>
 						<span class="tt-menu__head">
 							<span class="tt-menu__label">{item.label}</span>
 							<span class="tt-menu__arrow" aria-hidden="true" />
 						</span>
 						{item.ja && <span class="tt-menu__ja">{item.ja}</span>}
-						{item.preview && <span class="tt-menu__preview">{item.preview}</span>}
+						{item.comingSoon ? (
+							<span class="tt-menu__preview tt-menu__soon">Coming soon</span>
+						) : (
+							item.preview && <span class="tt-menu__preview">{item.preview}</span>
+						)}
 					</a>
 				</li>
 			))

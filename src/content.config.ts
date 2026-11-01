@@ -4,8 +4,12 @@ import { defineCollection, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
-/** content/ の中の1ファイルを、ファイル名と同じ ID の1件として読み込む */
-const contentFile = (name: string) => glob({ pattern: name, base: "./content" });
+/**
+ * content/ の中の1ファイルを、ファイル名（拡張子なし）を ID にした1件として読み込む。
+ * ID を固定しておくと、中身を全部消して空になったファイルも読み込める（既定の ID の決め方は中身を見るため）
+ */
+const contentFile = (name: string) =>
+	glob({ pattern: name, base: "./content", generateId: () => name.replace(/\.\w+$/, "") });
 
 /** エラーメッセージ。項目がないときは「必須」、形が違うときは message */
 const requiredOr = (message: string) => (issue: { input?: unknown }) =>
@@ -22,7 +26,7 @@ const date = z
 	.transform((value) => (value instanceof Date ? value.toISOString().slice(0, 10) : String(value)))
 	.pipe(z.string().regex(/^\d{4}(-\d{2}(-\d{2})?)?$/, DATE_MESSAGE));
 
-/** 一覧。項目名だけ書いて中身が空（null）のときも、空の一覧として扱う */
+/** 一覧。項目名だけ書いて中身が空（null）のときや、ファイルが空のときも、空の一覧として扱う */
 const list = <T extends z.ZodType>(item: T) =>
 	z
 		.array(item)
@@ -79,7 +83,7 @@ const profile = defineCollection({
 
 const results = defineCollection({
 	loader: contentFile("results.yaml"),
-	schema: z.array(
+	schema: list(
 		z.object({
 			date,
 			title: text,
@@ -92,7 +96,7 @@ const results = defineCollection({
 
 const news = defineCollection({
 	loader: contentFile("news.yaml"),
-	schema: z.array(
+	schema: list(
 		z.object({
 			date,
 			category: text.nullish(),
@@ -105,16 +109,19 @@ const news = defineCollection({
 const gallery = defineCollection({
 	loader: contentFile("gallery.yaml"),
 	schema: ({ image }) =>
-		z.object({
-			photos: list(z.object({ title: text, image: picture(image) })),
-			videos: list(z.object({ title: text, youtube_id: text.nullish(), date: date.nullish() })),
-		}),
+		z
+			.object({
+				photos: list(z.object({ title: text, image: picture(image) })),
+				videos: list(z.object({ title: text, youtube_id: text.nullish(), date: date.nullish() })),
+			})
+			.nullish()
+			.transform((gallery) => gallery ?? { photos: [], videos: [] }),
 });
 
 const sponsor = defineCollection({
 	loader: contentFile("sponsor.yaml"),
 	schema: ({ image }) =>
-		z.array(
+		list(
 			z.object({
 				title: text,
 				description: text.nullish(),

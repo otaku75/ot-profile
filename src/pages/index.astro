@@ -4,9 +4,15 @@ import Hero from "../components/Hero.astro";
 import Menu from "../components/Menu.astro";
 import { nav } from "../data/site";
 import Base from "../layouts/Base.astro";
-import { formatDate, getNews, getProfile, getResults, getSponsors } from "../lib/content";
+import { formatDate, getComingSoonPages, getNews, getProfile, getResults, getSponsors } from "../lib/content";
 
-const [profile, results, news, sponsors] = await Promise.all([getProfile(), getResults(), getNews(), getSponsors()]);
+const [profile, results, news, sponsors, comingSoon] = await Promise.all([
+	getProfile(),
+	getResults(),
+	getNews(),
+	getSponsors(),
+	getComingSoonPages(),
+]);
 
 // メニューの各項目に、最新の戦績・お知らせやスポンサー名をプレビューとして添える（空のものは説明文）
 const [latestResult] = results;
@@ -16,7 +22,12 @@ const previews: Record<string, string | undefined> = {
 	news: latestNews && `${formatDate(latestNews.date)} ${latestNews.title}`,
 	sponsor: sponsors.map((sponsor) => sponsor.title).join("・"),
 };
-const items = nav.map((item) => ({ ...item, preview: previews[item.id] || item.description }));
+// 中身がまだないページは「Coming soon」の表示にする
+const items = nav.map((item) => ({
+	...item,
+	preview: previews[item.id] || item.description,
+	comingSoon: comingSoon.has(item.id),
+}));
 ---
 
 <Base>

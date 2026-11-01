@@ -1,32 +1,34 @@
 ---
 // お問い合わせページ。宛先のメールアドレスは content/site.yaml の contact_email
+import ComingSoon from "../components/ComingSoon.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Base from "../layouts/Base.astro";
-import { getSite } from "../lib/content";
+import { getSite, isComingSoon } from "../lib/content";
 
-const email = (await getSite()).contact_email;
+const [site, comingSoon] = await Promise.all([getSite(), isComingSoon("contact")]);
+const email = site.contact_email;
 ---
 
-<Base title="お問い合わせ">
+<Base title="お問い合わせ" noindex={comingSoon}>
 	<main>
 		<section class="section section--page-top" id="contact">
 			<div class="container">
 				<PageHeader en="Contact" ja="お問い合わせ" />
-				<div class="panel measure flow flow--md">
-					<p>取材・イベント出演・スポンサーシップに関するご相談は、下記よりお気軽にご連絡ください。</p>
-					{
-						email ? (
+				{
+					comingSoon ? (
+						<ComingSoon message="お問い合わせ先は準備中です。公開まで、もうしばらくお待ちください。" />
+					) : (
+						<div class="panel measure flow flow--md">
+							<p>取材・イベント出演・スポンサーシップに関するご相談は、下記よりお気軽にご連絡ください。</p>
 							<p>
 								<a class="button" href={`mailto:${email}`}>
 									メールで問い合わせる
 								</a>
 							</p>
-						) : (
-							<p class="caption">※ 現在、お問い合わせ先を準備中です。</p>
-						)
-					}
-					{email && <p class="caption">※ 内容を確認のうえ、折り返しご連絡いたします。</p>}
-				</div>
+							<p class="caption">※ 内容を確認のうえ、折り返しご連絡いたします。</p>
+						</div>
+					)
+				}
 			</div>
 		</section>
 	</main>

@@ -1,21 +1,28 @@
 ---
 // お知らせページ。内容は content/news.yaml
+import ComingSoon from "../components/ComingSoon.astro";
 import NewsList from "../components/NewsList.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Base from "../layouts/Base.astro";
-import { getNews } from "../lib/content";
+import { getNews, isComingSoon } from "../lib/content";
 
-const news = await getNews();
+const [news, comingSoon] = await Promise.all([getNews(), isComingSoon("news")]);
 ---
 
-<Base title="お知らせ">
+<Base title="お知らせ" noindex={comingSoon}>
 	<main>
 		<section class="section section--page-top" id="news">
 			<div class="container">
 				<PageHeader en="News" ja="お知らせ・試合予定" />
-				<div class="panel">
-					<NewsList items={news} />
-				</div>
+				{
+					comingSoon ? (
+						<ComingSoon />
+					) : (
+						<div class="panel">
+							<NewsList items={news} />
+						</div>
+					)
+				}
 			</div>
 		</section>
 	</main>
