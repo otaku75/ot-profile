@@ -3,8 +3,8 @@
  * 使用用具のカード一覧（ゲームの装備画面風）。各カードは .panel。
  * 写真がない場合はドット柄の枠にラケットのアイコンを表示する。
  */
-import type { ImageValue } from "emdash";
-import { Image } from "emdash/ui";
+import type { ImageField } from "../lib/content";
+import ContentImage from "./ContentImage.astro";
 
 interface Props {
 	items: {
@@ -13,7 +13,7 @@ interface Props {
 		name: string;
 		maker?: string | null;
 		comment?: string | null;
-		image?: ImageValue | null;
+		image?: ImageField | null;
 	}[];
 }
 
@@ -29,7 +29,7 @@ const { items } = Astro.props;
 					<div class="tt-equipment-list__main">
 						<div class="tt-equipment-list__icon bg-dots">
 							{item.image ? (
-								<Image image={item.image} alt="" sizes="7rem" />
+								<ContentImage image={item.image} alt="" sizes="7rem" />
 							) : (
 								<svg class="tt-equipment-list__racket" viewBox="0 0 48 48" aria-hidden="true">
 									<g transform="rotate(-15 21 26)">

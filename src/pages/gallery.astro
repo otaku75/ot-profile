@@ -1,12 +1,12 @@
 ---
-// ギャラリーページ（写真＋YouTube 動画）
+// ギャラリーページ（写真＋YouTube 動画）。内容は content/gallery.yaml
 import PageHeader from "../components/PageHeader.astro";
 import PhotoGallery from "../components/PhotoGallery.astro";
 import VideoList from "../components/VideoList.astro";
 import Base from "../layouts/Base.astro";
-import { getPhotos, getVideos } from "../lib/content";
+import { getGallery } from "../lib/content";
 
-const [photos, videos] = await Promise.all([getPhotos(), getVideos()]);
+const { photos, videos } = await getGallery();
 ---
 
 <Base title="ギャラリー">

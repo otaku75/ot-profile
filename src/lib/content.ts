@@ -1,44 +1,44 @@
-// 管理画面で編集するコンテンツの取得と、表示用の並べ替え・整形
-// コレクションの定義は seed/seed.json（管理画面でも変更できる）
-import { getEmDashCollection } from "emdash";
+// content/ に置いたコンテンツの取得と、表示用の並べ替え・整形
+// 読み込みと項目の形の定義は src/content.config.ts
+import type { ImageMetadata } from "astro";
+import { type CollectionKey, getEntry } from "astro:content";
 
-// 個人サイトなので件数は少ない前提で、一覧は全件を取得してから並べ替える
-const LIST_LIMIT = 500;
+/** content/ に書いた画像（形は src/content.config.ts の picture） */
+export interface ImageField {
+	src: ImageMetadata;
+	alt?: string | null;
+	/** 切り抜いたときの表示位置（object-position の値。例: '50% 20%'） */
+	position?: string | null;
+}
 
-/** プロフィール（1件だけ作る想定。複数あれば先頭を使う） */
+/** サイト全体の設定（content/site.yaml） */
+export async function getSite() {
+	return (await getFile("site")).data;
+}
+
+/** プロフィール（content/profile.md）。自己紹介（本文）は render() で表示する */
 export async function getProfile() {
-	const { entries } = await getEmDashCollection("profile", { limit: 1 });
-	return entries[0] ?? null;
+	return getFile("profile");
 }
 
-/** 戦績（日付の新しい順） */
+/** 戦績（content/results.yaml。日付の新しい順） */
 export async function getResults() {
-	const { entries } = await getEmDashCollection("results", { limit: LIST_LIMIT });
-	return entries.map((entry) => entry.data).toSorted(byDateDesc);
+	return (await getFile("results")).data.toSorted(byDateDesc);
 }
 
-/** お知らせ（日付の新しい順） */
+/** お知らせ（content/news.yaml。日付の新しい順） */
 export async function getNews() {
-	const { entries } = await getEmDashCollection("news", { limit: LIST_LIMIT });
-	return entries.map((entry) => entry.data).toSorted(byDateDesc);
+	return (await getFile("news")).data.toSorted(byDateDesc);
 }
 
-/** ギャラリーの写真（並び順の小さい順） */
-export async function getPhotos() {
-	const { entries } = await getEmDashCollection("photos", { limit: LIST_LIMIT });
-	return entries.map((entry) => entry.data).toSorted(bySortOrder);
+/** ギャラリーの写真と動画（content/gallery.yaml。書いた順） */
+export async function getGallery() {
+	return (await getFile("gallery")).data;
 }
 
-/** ギャラリーの動画（並び順の小さい順） */
-export async function getVideos() {
-	const { entries } = await getEmDashCollection("videos", { limit: LIST_LIMIT });
-	return entries.map((entry) => entry.data).toSorted(bySortOrder);
-}
-
-/** スポンサー（並び順の小さい順） */
+/** スポンサー（content/sponsor.yaml。書いた順） */
 export async function getSponsors() {
-	const { entries } = await getEmDashCollection("sponsors", { limit: LIST_LIMIT });
-	return entries.map((entry) => entry.data).toSorted(bySortOrder);
+	return (await getFile("sponsor")).data;
 }
 
 /** '2026-08-24' → '2026.08.24' */
@@ -46,17 +46,14 @@ export function formatDate(date: string) {
 	return date.replaceAll("-", ".");
 }
 
-// 日付は 'YYYY-MM-DD' / 'YYYY-MM' / 'YYYY' の文字列なので、文字列の比較で並べられる
-function byDateDesc(a: { date?: string | null }, b: { date?: string | null }) {
-	return (b.date ?? "").localeCompare(a.date ?? "");
+// 各コレクションは content/ の1ファイルで、ID はコレクション名と同じ（src/content.config.ts の contentFile）
+async function getFile<C extends CollectionKey>(collection: C) {
+	const entry = await getEntry(collection, collection);
+	if (!entry) throw new Error(`content/ の ${collection} のファイルが読み込めませんでした`);
+	return entry;
 }
 
-// 並び順が未入力のものは後ろに回し、同じ並び順なら新しく作ったものを先にする
-function bySortOrder(
-	a: { sort?: number | null; createdAt?: Date },
-	b: { sort?: number | null; createdAt?: Date },
-) {
-	const order = (a.sort ?? Infinity) - (b.sort ?? Infinity);
-	if (order !== 0 && !Number.isNaN(order)) return order;
-	return (b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0);
+// 日付は 'YYYY-MM-DD' / 'YYYY-MM' / 'YYYY' の文字列なので、文字列の比較で並べられる
+function byDateDesc(a: { date: string }, b: { date: string }) {
+	return b.date.localeCompare(a.date);
 }

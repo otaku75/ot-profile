@@ -1,24 +1,24 @@
 ---
 /**
- * サイト共通フッター。SNS は管理画面のサイト設定（Settings → Social）に入力したものだけを表示する。
+ * サイト共通フッター。SNS は content/site.yaml の social に書いたものだけを表示する。
  */
 interface Props {
 	name: string;
-	/** getSiteSettings().social（アカウント名か URL） */
-	social?: Partial<Record<string, string>>;
+	/** サービスごとのアカウント名か URL（空のものは出さない） */
+	social?: { instagram?: string | null; x?: string | null; youtube?: string | null } | null;
 }
 
-const { name, social = {} } = Astro.props;
+const { name, social } = Astro.props;
 
 // アカウント名（@ はあってもなくてもよい）なら URL を組み立てる。URL ならそのまま使う
-const SERVICES = [
+const SERVICES: { key: keyof NonNullable<Props["social"]>; label: string; url: (handle: string) => string }[] = [
 	{ key: "instagram", label: "Instagram", url: (handle: string) => `https://www.instagram.com/${handle}/` },
-	{ key: "twitter", label: "X", url: (handle: string) => `https://x.com/${handle}` },
+	{ key: "x", label: "X", url: (handle: string) => `https://x.com/${handle}` },
 	{ key: "youtube", label: "YouTube", url: (handle: string) => `https://www.youtube.com/@${handle}` },
 ];
 
 const links = SERVICES.flatMap(({ key, label, url }) => {
-	const value = social[key]?.trim();
+	const value = social?.[key]?.trim();
 	if (!value) return [];
 	return [{ label, href: /^https?:\/\//.test(value) ? value : url(value.replace(/^@/, "")) }];
 });

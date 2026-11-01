@@ -1,6 +1,7 @@
 ---
-// プロフィールページ（ゲームのステータス画面風）
-import { Image, PortableText } from "emdash/ui";
+// プロフィールページ（ゲームのステータス画面風）。内容は content/profile.md
+import { render } from "astro:content";
+import ContentImage from "../components/ContentImage.astro";
 import EquipmentList from "../components/EquipmentList.astro";
 import FactList from "../components/FactList.astro";
 import PageHeader from "../components/PageHeader.astro";
@@ -10,12 +11,13 @@ import Timeline from "../components/Timeline.astro";
 import Base from "../layouts/Base.astro";
 import { getProfile } from "../lib/content";
 
-const profile = (await getProfile())?.data;
-// 繰り返し項目は未入力だと undefined になるので、空の配列にそろえる（空のセクションは表示しない）
-const facts = profile?.facts ?? [];
-const abilities = profile?.abilities ?? [];
-const equipment = profile?.equipment ?? [];
-const history = profile?.history ?? [];
+const entry = await getProfile();
+const profile = entry.data;
+// 一覧の項目は空なら空の配列になる（空のセクションは表示しない）
+const { facts, abilities, equipment, history } = profile;
+// 自己紹介は profile.md の本文
+const { Content: Bio } = await render(entry);
+const hasBio = Boolean(entry.body?.trim());
 ---
 
 <Base title="プロフィール">
@@ -25,8 +27,8 @@ const history = profile?.history ?? [];
 				<PageHeader en="Profile" ja="プロフィール" />
 				<div class="split split--media">
 					{
-						profile?.photo && (
-							<Image
+						profile.photo && (
+							<ContentImage
 								image={profile.photo}
 								class="photo"
 								alt={profile.photo.alt || profile.name_ja}
@@ -37,9 +39,9 @@ const history = profile?.history ?? [];
 					<div class="flow flow--lg">
 						<div class="panel flow flow--md">
 							<div class="flow flow--sm">
-								{profile?.label && <p class="tag tag--primary">{profile.label}</p>}
-								<h2 class="display-title">{profile?.name_en}</h2>
-								<p class="caption">{profile?.name_ja}</p>
+								{profile.label && <p class="tag tag--primary">{profile.label}</p>}
+								<h2 class="display-title">{profile.name_en}</h2>
+								<p class="caption">{profile.name_ja}</p>
 							</div>
 							{
 								facts.length > 0 && (
@@ -51,9 +53,9 @@ const history = profile?.history ?? [];
 							}
 						</div>
 						{
-							profile?.bio && (
+							hasBio && (
 								<div class="flow">
-									<PortableText value={profile.bio} />
+									<Bio />
 								</div>
 							)
 						}

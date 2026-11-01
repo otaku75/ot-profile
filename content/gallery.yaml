@@ -1,0 +1,39 @@
+# ギャラリー（写真と動画）。どちらも上から順に表示
+# 片方が空（[]）なら、その見出しごと表示されない
+
+# 写真。ファイルは content/images/ に置く
+#   title    … キャプション
+#   image    … src: 写真のファイル / alt: 写真の説明（なければキャプションを使う）
+#              position: 一覧で正方形に切り抜くときにどこを見せるか（横 縦。"50% 20%" なら中央・上寄り）
+photos:
+  - title: 〇〇大会 準々決勝
+    image:
+      src: ./images/hero.jpg
+      alt: 試合中にボールを打つ選手
+      position: 62% 30%
+  - title: 練習場にて
+    image:
+      src: ./images/profile.jpg
+      alt: ユニフォーム姿で立つ選手
+      position: 50% 20%
+  - title: 〇〇オープン
+    image:
+      src: ./images/hero.jpg
+      alt: 試合中にボールを打つ選手
+      position: 62% 30%
+  - title: 〇〇クラブの練習
+    image:
+      src: ./images/profile.jpg
+      alt: ユニフォーム姿で立つ選手
+      position: 50% 20%
+
+# YouTube の動画
+#   youtube_id … https://www.youtube.com/watch?v=XXXX の XXXX の部分。空なら「COMING SOON」と表示
+#   date       … 2026-08-24 / 2026-08 / 2026 のどれか（なくてもよい）
+videos:
+  - title: 〇〇選手権大会 決勝ハイライト
+    youtube_id:
+    date: 2026-08-24
+  - title: 練習風景（多球練習）
+    youtube_id:
+    date: 2026-06-10

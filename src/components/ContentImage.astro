@@ -1,0 +1,29 @@
+---
+/**
+ * content/ に書いた画像（{ src, alt, position }）を表示する。Astro の <Image> で、ビルド時に幅違いの画像を書き出す。
+ * position（例: '50% 20%'）は object-position としてそのまま入る。切り抜くときの位置は CSS ではなくコンテンツ側で決める。
+ * 画像1枚を出すだけの薄いラッパーなので、ほかのコンポーネントと違い tt- のルート要素は持たない。
+ */
+import { Image } from "astro:assets";
+import type { ImageField } from "../lib/content";
+
+interface Props {
+	image: ImageField;
+	/** 指定すると image.alt の代わりに使う（'' で装飾画像） */
+	alt?: string | null;
+	class?: string;
+	sizes?: string;
+	/** ページ上部の大きな画像（先に読み込む） */
+	priority?: boolean;
+	loading?: "eager" | "lazy";
+}
+
+const { image, alt, ...attrs } = Astro.props;
+---
+
+<Image
+	src={image.src}
+	alt={alt ?? image.alt ?? ""}
+	style={image.position ? `object-position: ${image.position}` : undefined}
+	{...attrs}
+/>

@@ -23,10 +23,10 @@ const items = nav.map((item) => ({ ...item, preview: previews[item.id] || item.d
 	<main>
 		<Hero
 			framed
-			image={profile?.data.hero_image}
-			eyebrow={profile?.data.label}
-			heading={profile?.data.name_en ?? ""}
-			subheading={profile?.data.name_ja}
+			image={profile.data.hero_image}
+			eyebrow={profile.data.label}
+			heading={profile.data.name_en}
+			subheading={profile.data.name_ja}
 		/>
 		<nav class="section section--flush-top" aria-label="メニュー">
 			<div class="container">

@@ -1,25 +1,11 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "my-profile",
-	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
-	"compatibility_flags": ["nodejs_compat"],
-	"d1_databases": [
-		{
-			"binding": "DB",
-			"database_name": "my-profile",
-		},
-	],
-	"r2_buckets": [
-		{
-			"binding": "MEDIA",
-			"bucket_name": "my-profile-media",
-		},
-	],
-	// Sandboxed plugins require Worker Loader, available on Workers paid plans. Uncomment to enable:
-	// "worker_loaders": [{ "binding": "LOADER" }],
-	// General maintenance cron trigger
-	"triggers": {
-		"crons": ["* * * * *"],
+	// npm run build で作った dist/ の静的ファイルをそのまま配信する（Worker のコードはない）
+	"assets": {
+		"directory": "./dist",
+		// 存在しない URL では dist/404.html（GAME OVER）を 404 で返す
+		"not_found_handling": "404-page",
 	},
 }

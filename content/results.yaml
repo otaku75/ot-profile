@@ -1,0 +1,35 @@
+# 戦績（戦績ページと、トップのメニューの「最新」に表示）
+# 日付の新しい順に自動で並ぶので、書く順番は自由
+#
+#   date      … 2026-08-24 / 2026-08 / 2026 のどれか
+#   title     … 大会名
+#   note      … 種目（なくてもよい）
+#   badge     … 結果（例: 優勝、ベスト4。なくてもよい）
+#   highlight … true にすると金色で強調する
+
+- date: 2026-08-24
+  title: 〇〇選手権大会
+  note: 一般シングルス
+  badge: 優勝
+  highlight: true
+
+- date: 2026-05-03
+  title: 〇〇オープン
+  note: 一般シングルス
+  badge: ベスト4
+
+- date: 2025-11-16
+  title: 〇〇リーグ
+  note: 団体
+  badge: 準優勝
+  highlight: true
+
+- date: 2025-06
+  title: 〇〇大会
+  note: ダブルス
+  badge: ベスト8
+
+- date: 2024-09-22
+  title: 〇〇選手権大会
+  note: 一般シングルス
+  badge: ベスト16

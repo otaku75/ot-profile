@@ -3,15 +3,15 @@
  * スポンサーの一覧。ロゴ（なければ社名）・紹介文・公式サイトへのリンクをカードで表示する。
  * カードの幅が広いときは、ロゴと文章を横に並べる。
  */
-import type { ImageValue } from "emdash";
-import { Image } from "emdash/ui";
+import type { ImageField } from "../lib/content";
+import ContentImage from "./ContentImage.astro";
 
 interface Props {
 	sponsors: {
 		title: string;
 		description?: string | null;
 		url?: string | null;
-		logo?: ImageValue | null;
+		logo?: ImageField | null;
 		since?: string | null;
 	}[];
 	/** 社名の見出しレベル（既定 2） */
@@ -30,7 +30,7 @@ const Heading = `h${level}` as const;
 					<article class="tt-sponsor-list__card panel">
 						<div class="tt-sponsor-list__logo bg-dots">
 							{sponsor.logo ? (
-								<Image image={sponsor.logo} alt={sponsor.title} />
+								<ContentImage image={sponsor.logo} alt={sponsor.title} />
 							) : (
 								<span class="tt-sponsor-list__logo-text" aria-hidden="true">
 									{sponsor.title}

@@ -1,22 +1,15 @@
-import cloudflare from "@astrojs/cloudflare";
-import react from "@astrojs/react";
-import { d1, r2 } from "@emdash-cms/cloudflare";
 import { defineConfig } from "astro/config";
-import emdash from "emdash/astro";
 
+// 静的サイトとして書き出す（npm run build で dist/ に HTML・CSS・JS・画像ができる）
 export default defineConfig({
-	output: "server",
-	adapter: cloudflare(),
+	// 公開先の URL。決まったら書く（canonical と、SNS でシェアされたときの画像に使う）
+	// site: "https://my-profile.<アカウント名>.workers.dev",
+	// /profile.html のように書き出し、URL の末尾に / を付けない（/profile）
+	build: { format: "file" },
+	trailingSlash: "never",
 	image: {
 		layout: "constrained",
 		responsiveStyles: true,
 	},
-	integrations: [
-		react(),
-		emdash({
-			database: d1({ binding: "DB", session: "auto", coalesce: true }),
-			storage: r2({ binding: "MEDIA" }),
-		}),
-	],
 	devToolbar: { enabled: false },
 });

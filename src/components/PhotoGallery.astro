@@ -3,16 +3,16 @@
  * 写真の一覧（正方形のタイル）。押すと全画面のビューアで大きく表示し、前後の写真に移動できる。
  * ビューアは ← → キーやスワイプでも移動でき、Esc か写真の外を押すと閉じる（下の <script>）。
  * 大きい画像は写真ごとの <template> に入れておき、表示するときに複製する（開くまで読み込まない）。
- * タイルの正方形の切り抜きは CSS（object-fit）で行い、表示位置は管理画面で設定した写真のフォーカルポイントに従う。
+ * タイルの正方形の切り抜きは CSS（object-fit）で行い、表示位置は写真に書いた position に従う。
  */
-import type { ImageValue } from "emdash";
-import { Image } from "emdash/ui";
+import type { ImageField } from "../lib/content";
+import ContentImage from "./ContentImage.astro";
 
 interface Props {
-	photos: { title: string; image?: ImageValue | null }[];
+	photos: { title: string; image: ImageField }[];
 }
 
-const photos = Astro.props.photos.filter((photo) => photo.image);
+const { photos } = Astro.props;
 
 // タイルの幅（2〜4列）。横長の写真は正方形に切り抜くと幅の1.5倍で表示されるので、その分大きめにする
 const THUMB_SIZES = "(min-width: 1200px) 400px, (min-width: 900px) 35vw, (min-width: 600px) 47vw, 70vw";
@@ -24,10 +24,15 @@ const THUMB_SIZES = "(min-width: 1200px) 400px, (min-width: 900px) 35vw, (min-wi
 			photos.map((photo, i) => (
 				<li>
 					<button type="button" class="tt-photo-gallery__thumb" data-index={i} aria-haspopup="dialog">
-						<Image image={photo.image} alt={photo.image?.alt || photo.title} sizes={THUMB_SIZES} />
+						<ContentImage image={photo.image} alt={photo.image.alt || photo.title} sizes={THUMB_SIZES} />
 					</button>
 					<template class="tt-photo-gallery__source" data-caption={photo.title}>
-						<Image image={photo.image} alt={photo.image?.alt || photo.title} class="tt-photo-gallery__image" loading="eager" />
+						<ContentImage
+							image={photo.image}
+							alt={photo.image.alt || photo.title}
+							class="tt-photo-gallery__image"
+							loading="eager"
+						/>
 					</template>
 				</li>
 			))
