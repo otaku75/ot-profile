@@ -24,7 +24,12 @@ html {
   }
 }
 
+/* 中身が短いページ（お問い合わせなど）でも、main を伸ばしてフッターを画面の下端に置く
+   （フッターの下に背景がのぞかないようにする） */
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
   font-family: var(--font-sans);
   font-size: var(--font-size-md);
   font-weight: 500;
@@ -32,6 +37,10 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
+}
+
+body > main {
+  flex-grow: 1;
 }
 
 /* 写真以外の背景はドット柄にする。
