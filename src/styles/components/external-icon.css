@@ -1,0 +1,11 @@
+/* 外部サイトへのリンクに添える矢印（↗）。文字色で塗る（JS不要のためCSSクラスのみ）
+   <a href="https://..." target="_blank" rel="noopener">公式サイト<span class="external-icon" aria-hidden="true"></span></a> */
+
+.external-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.7rem;
+  height: 0.7rem;
+  background-color: currentColor;
+  clip-path: polygon(30% 0, 100% 0, 100% 70%, 78% 48%, 22% 100%, 0 78%, 52% 22%);
+}

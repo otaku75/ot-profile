@@ -12,6 +12,7 @@
 @import url("./components/bounce-ball.css");
 @import url("./components/photo.css");
 @import url("./components/panel.css");
+@import url("./components/external-icon.css");
 
 /* Custom Elements */
 @import url("./components/tt-header.css");
@@ -29,3 +30,5 @@
 @import url("./components/tt-video-list.css");
 @import url("./components/tt-sponsor-list.css");
 @import url("./components/tt-coming-soon.css");
+@import url("./components/tt-work-list.css");
+@import url("./components/tt-feature-list.css");

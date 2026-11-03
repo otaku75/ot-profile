@@ -132,4 +132,25 @@ const sponsor = defineCollection({
 		),
 });
 
-export const collections = { site, profile, results, news, gallery, sponsor };
+const works = defineCollection({
+	loader: contentFile("works.yaml"),
+	schema: ({ image }) =>
+		z
+			.object({
+				works: list(
+					z.object({
+						title: text,
+						description: text.nullish(),
+						date: date.nullish(),
+						tags: list(text),
+						url: z.url("URL の形で書いてください").nullish(),
+						image: picture(image).nullish(),
+					}),
+				),
+				services: list(z.object({ title: text, description: text.nullish() })),
+			})
+			.nullish()
+			.transform((works) => works ?? { works: [], services: [] }),
+});
+
+export const collections = { site, profile, results, news, gallery, sponsor, works };

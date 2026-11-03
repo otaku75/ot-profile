@@ -1,0 +1,38 @@
+tt-feature-list {
+  display: block;
+}
+
+/* モバイル: 1列 / 横幅に余裕があれば並べる（PC では3列） */
+.tt-feature-list__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-5);
+}
+
+.tt-feature-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+}
+
+/* ゲームのコマンド番号のような 01, 02… */
+.tt-feature-list__number {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--color-accent-text);
+}
+
+.tt-feature-list__title {
+  font-size: var(--font-size-lg);
+  line-height: 1.5;
+}
+
+.tt-feature-list__description {
+  font-size: var(--font-size-sm);
+  line-height: 1.8;
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,56 @@
+---
+// Works ページ（つくったもの・IT のご相談）。内容は content/works.yaml
+import ComingSoon from "../components/ComingSoon.astro";
+import FeatureList from "../components/FeatureList.astro";
+import PageHeader from "../components/PageHeader.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import WorkList from "../components/WorkList.astro";
+import Base from "../layouts/Base.astro";
+import { getComingSoonPages, getWorks } from "../lib/content";
+
+const [{ works, services }, comingSoonPages] = await Promise.all([getWorks(), getComingSoonPages()]);
+const comingSoon = comingSoonPages.has("works");
+// お問い合わせ先がまだないときは、相談のボタンを出さない
+const canContact = !comingSoonPages.has("contact");
+---
+
+<Base title="つくったもの" noindex={comingSoon}>
+	<main>
+		<section class="section section--page-top" id="works">
+			<div class="container flow flow--lg">
+				<PageHeader en="Works" ja="つくったもの" />
+				{comingSoon && <ComingSoon />}
+				{
+					works.length > 0 && (
+						<>
+							<p class="measure">これまでにつくったものを紹介します。</p>
+							<WorkList works={works} />
+						</>
+					)
+				}
+			</div>
+		</section>
+		{
+			services.length > 0 && (
+				<section class="section section--muted" id="service">
+					<div class="container flow flow--md">
+						<SectionHeading en="Service" ja="IT・DX のご相談" />
+						<p class="measure">
+							卓球に関わる IT・DX のご相談を受け付けています。クラブや大会の運営で困っていることがあれば、お気軽にご連絡ください。
+						</p>
+						<FeatureList items={services} />
+						{
+							canContact && (
+								<p>
+									<a class="button" href="/contact">
+										相談する（お問い合わせへ）
+									</a>
+								</p>
+							)
+						}
+					</div>
+				</section>
+			)
+		}
+	</main>
+</Base>

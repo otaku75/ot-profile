@@ -1,0 +1,33 @@
+---
+/**
+ * 見出しと短い説明文の小さなカード一覧（できること・サービスの紹介など）。
+ * 各カードの左上に、ゲームのコマンド番号のような 01, 02… の番号を付ける。
+ */
+interface Props {
+	items: {
+		title: string;
+		description?: string | null;
+	}[];
+	/** 見出しレベル（既定 3） */
+	level?: 2 | 3 | 4 | 5 | 6;
+}
+
+const { items, level = 3 } = Astro.props;
+const Heading = `h${level}` as const;
+---
+
+<tt-feature-list>
+	<ol class="tt-feature-list__list">
+		{
+			items.map((item, i) => (
+				<li class="tt-feature-list__item panel">
+					<span class="tt-feature-list__number" aria-hidden="true">
+						{String(i + 1).padStart(2, "0")}
+					</span>
+					<Heading class="tt-feature-list__title">{item.title}</Heading>
+					{item.description && <p class="tt-feature-list__description">{item.description}</p>}
+				</li>
+			))
+		}
+	</ol>
+</tt-feature-list>

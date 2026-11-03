@@ -1,0 +1,65 @@
+tt-work-list {
+  display: block;
+}
+
+/* 横幅に収まる数だけ並べ、1枚でも横に伸ばしすぎない（PC では2列まで） */
+.tt-work-list__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+  gap: var(--space-6);
+}
+
+.tt-work-list__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+}
+
+/* 画像はゲームの画面写真のような枠に、16:10 で切り抜いて表示する（どこを見せるかは content の position） */
+.tt-work-list__media {
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border: 2px solid var(--color-outline);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-subtle);
+}
+
+.tt-work-list__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tt-work-list__body > * + * {
+  margin-top: var(--space-2);
+}
+
+.tt-work-list__date {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.tt-work-list__title {
+  font-size: var(--font-size-xl);
+  line-height: 1.4;
+}
+
+.tt-work-list__description {
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
+}
+
+.tt-work-list__body > .tt-work-list__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* リンクはカードの下端にそろえる */
+.tt-work-list__link {
+  margin-top: auto;
+}

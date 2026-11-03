@@ -1,7 +1,7 @@
 # Hikaru Ota — 卓球ポートフォリオ
 
 卓球プレーヤー 太田輝のポートフォリオサイトです。
-ゲームのメニュー画面のように、トップのメニューから各ページ（プロフィール・戦績・ギャラリー・お知らせ・スポンサー・お問い合わせ）に移動します。
+ゲームのメニュー画面のように、トップのメニューから各ページ（プロフィール・戦績・ギャラリー・つくったもの・お知らせ・スポンサー・お問い合わせ）に移動します。
 
 - [Astro](https://astro.build/) で静的サイトとして書き出し、Cloudflare Workers で配信する（サーバー側のコードやデータベースはない）
 - 文章・写真・戦績などの内容は `content/` のファイルに書き、git push で公開する
@@ -36,6 +36,7 @@ http://localhost:4321 で確認できます。`content/` のファイルを保�
 | `content/results.yaml` | 戦績 |
 | `content/news.yaml` | お知らせ |
 | `content/gallery.yaml` | ギャラリーの写真・動画（写真のファイルは `content/images/`） |
+| `content/works.yaml` | つくったもの・IT のご相談の内容（Works ページ） |
 | `content/sponsor.yaml` | スポンサー |
 
 書き方（日付・写真・「準備中」にする方法など）は [content/README.md](content/README.md) にまとめています。

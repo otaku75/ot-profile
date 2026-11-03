@@ -28,20 +28,20 @@ npm run build       # dist/ に書き出す（コンテンツの書き間違い�
 
 ### ページの組み立て
 
-- 縦に長い1ページではなく、ゲームのメニュー画面のようにボタンで画面を移動する構成。トップ（`src/pages/index.astro`）はヒーロー＋メニューだけのタイトル画面で、内容は下層ページ（`profile` / `results` / `gallery` / `news` / `sponsor` / `contact`）に分ける。下層ページは先頭に `PageHeader`（メニューへ戻るボタン＋h1）を置く。
+- 縦に長い1ページではなく、ゲームのメニュー画面のようにボタンで画面を移動する構成。トップ（`src/pages/index.astro`）はヒーロー＋メニューだけのタイトル画面で、内容は下層ページ（`profile` / `results` / `gallery` / `works` / `news` / `sponsor` / `contact`）に分ける。下層ページは先頭に `PageHeader`（メニューへ戻るボタン＋h1）を置く。
 - ページは `src/pages/*.astro`。ビルド時に `/profile.html` の形で書き出し（`build.format: "file"`）、URL は末尾の `/` なしの `/profile` にそろえる（`trailingSlash: "never"`。Cloudflare は `/profile.html` や `/profile/` を `/profile` にリダイレクトする）。ビルド時の `Astro.url.pathname` は `/profile.html` になるので、ナビとの比較などは `src/lib/path.ts` の `pagePath()` を通す。
-- 全ページ共通の `<head>`（SEO・OGP の meta を含む）・ヘッダー・フッターは `src/layouts/Base.astro`。ページ側は `title` / `description` を渡すだけにする。canonical と `og:image` は絶対 URL が要るので、`astro.config.mjs` の `site` を設定したときだけ出る（公開先の URL が決まったら設定する）。
+- 全ページ共通の `<head>`（SEO・OGP の meta を含む）・ヘッダー・フッターは `src/layouts/Base.astro`。`body` は縦の flex で `main` を伸ばし、中身が短いページでもフッターを画面の下端に置く（ページの中身は必ず `<main>` で囲む）。ページ側は `title` / `description` を渡すだけにする。canonical と `og:image` は絶対 URL が要るので、`astro.config.mjs` の `site` を設定したときだけ出る（公開先の URL が決まったら設定する）。
 - 存在しない URL では `src/pages/404.astro`（GAME OVER 風）が返る（`wrangler.jsonc` の `not_found_handling: "404-page"`）。
 - ページ移動の演出は `src/styles/base.css` の View Transitions（`@view-transition`）で CSS だけで行う。固定ヘッダーは `view-transition-name` で演出から外している。
-- ナビ（ヘッダーとトップのメニューの両方で使う）はコードで管理する（`src/data/site.ts`）。ページを増やすときは `src/pages/` にページを作り、`nav` に項目を足す。ヘッダーは現在の URL と一致するリンクに `aria-current="page"` を付ける。
+- ナビ（ヘッダーとトップのメニューの両方で使う）はコードで管理する（`src/data/site.ts`）。ページを増やすときは `src/pages/` にページを作り、`nav` に項目を足す。項目が増えたら、PC のヘッダー（900px 前後）とスマホの全画面メニュー（背の低い画面）に収まるか確かめる。ヘッダーは現在の URL と一致するリンクに `aria-current="page"` を付ける。
 
 ### コンテンツ（`content/`）
 
-- サイトに載せる内容はすべてリポジトリ直下の `content/` に置き、ページ＝ファイルの対応にする: `site.yaml`（サイト名・説明文・お問い合わせ先メール・SNS）/ `profile.md`（frontmatter に名前・写真・基本情報・能力値・そうび・卓球歴、本文が自己紹介の Markdown）/ `results.yaml` / `news.yaml` / `gallery.yaml`（`photos` と `videos`）/ `sponsor.yaml`。写真は `content/images/`。
+- サイトに載せる内容はすべてリポジトリ直下の `content/` に置き、ページ＝ファイルの対応にする: `site.yaml`（サイト名・説明文・お問い合わせ先メール・SNS）/ `profile.md`（frontmatter に名前・写真・基本情報・能力値・そうび・卓球歴、本文が自己紹介の Markdown）/ `results.yaml` / `news.yaml` / `gallery.yaml`（`photos` と `videos`）/ `works.yaml`（つくったもの `works` と、IT・DX のご相談の内容 `services`）/ `sponsor.yaml`。写真は `content/images/`。
 - `content/README.md` は、ユーザー向けの「どこを直すか」の案内。各ファイルの先頭コメントにも項目の意味と書き方を書いている。項目やファイルを変えたら、README・先頭コメント・スキーマの3か所をそろえる。
 - 読み込みと項目の形（zod のスキーマ）は `src/content.config.ts`。Astro のコンテンツコレクションで、1ファイル＝1コレクション（ID はコレクション名と同じ）。一覧のファイルは最上位が配列。
 - YAML では `2026-08-24` が日付、`2025` が数値として読まれるので、スキーマの `date` / `text` で文字列に戻している。書き間違いはビルド時に日本語のエラーになるよう、メッセージをスキーマに書く。
-- 中身が空のページ（戦績・お知らせ・ギャラリー・スポンサーの一覧が空、お問い合わせのメールが空）は「準備中」になる。判定は `src/lib/content.ts` の `getComingSoonPages()`（nav の id の Set）に集め、ページは `isComingSoon()` で `ComingSoon` コンポーネントに切り替えて `noindex` にし、トップのメニューは `comingSoon` の項目を点線の枠で表示する。空のファイルも読めるように、一覧のスキーマは `list()`、ID は `contentFile()` でファイル名から固定している。
+- 中身が空のページ（戦績・お知らせ・ギャラリー・Works・スポンサーの一覧が空、お問い合わせのメールが空）は「準備中」になる。判定は `src/lib/content.ts` の `getComingSoonPages()`（nav の id の Set）に集め、ページは `isComingSoon()` で `ComingSoon` コンポーネントに切り替えて `noindex` にし、トップのメニューは `comingSoon` の項目を点線の枠で表示する。空のファイルも読めるように、一覧のスキーマは `list()`、ID は `contentFile()` でファイル名から固定している。
 - コンテンツの取得と表示用の並べ替えは `src/lib/content.ts` にまとめ、ページはそこから取得する。同じデータを複数ページで使い、形が合わない場合はページ側で変換して渡す（`index.astro` で戦績・お知らせの最新1件をメニューのプレビューにしている例を参照）。
 - 日付は年月だけの場合もあるので、`'YYYY-MM-DD'` / `'YYYY-MM'` / `'YYYY'` の文字列で持ち、文字列の比較で並べる。戦績・お知らせ・卓球歴は日付で並べ、それ以外は書いた順に表示する（並び順の項目は持たない）。
 - 画像は `{ src, alt, position }`（`position` は `object-position` の値）。`ContentImage` コンポーネント（Astro の `<Image>` の薄いラッパー）で表示し、ビルド時に幅違いの webp を書き出す。表示位置は `position` がインラインの `object-position` として入るので、CSS で画像の位置を決めない。正方形などに切り抜く場合も `width` / `height` を渡して画像自体を切り抜かず、CSS の `object-fit` で切り抜く（画像自体の切り抜きは `position` を無視して中央になるため）。

@@ -1,0 +1,64 @@
+---
+/**
+ * つくったもの（作品・制作物）のカード一覧。各カードは .panel で、
+ * 画像（あれば）・時期・名前・紹介文・タグ・見られるページへのリンクを表示する。
+ */
+import { formatDate, type ImageField } from "../lib/content";
+import ContentImage from "./ContentImage.astro";
+
+interface Props {
+	works: {
+		title: string;
+		description?: string | null;
+		/** 'YYYY-MM-DD' / 'YYYY-MM' / 'YYYY' */
+		date?: string | null;
+		/** 種類や使った技術 */
+		tags?: string[];
+		url?: string | null;
+		image?: ImageField | null;
+	}[];
+	/** 名前の見出しレベル（既定 2） */
+	level?: 2 | 3 | 4 | 5 | 6;
+}
+
+const { works, level = 2 } = Astro.props;
+const Heading = `h${level}` as const;
+---
+
+<tt-work-list>
+	<ul class="tt-work-list__list">
+		{
+			works.map((work) => (
+				<li>
+					<article class="tt-work-list__card panel">
+						{work.image && (
+							<div class="tt-work-list__media">
+								<ContentImage image={work.image} sizes="(min-width: 900px) 34rem, 100vw" />
+							</div>
+						)}
+						<div class="tt-work-list__body">
+							{work.date && <p class="tt-work-list__date">{formatDate(work.date)}</p>}
+							<Heading class="tt-work-list__title">{work.title}</Heading>
+							{work.description && <p class="tt-work-list__description">{work.description}</p>}
+							{work.tags && work.tags.length > 0 && (
+								<ul class="tt-work-list__tags" aria-label="種類・使った技術">
+									{work.tags.map((tag) => (
+										<li class="tag">{tag}</li>
+									))}
+								</ul>
+							)}
+						</div>
+						{work.url && (
+							<p class="tt-work-list__link">
+								<a class="button button--sm button--secondary" href={work.url} target="_blank" rel="noopener">
+									見てみる<span class="external-icon" aria-hidden="true" />
+									<span class="visually-hidden">（{work.title}。新しいタブで開きます）</span>
+								</a>
+							</p>
+						)}
+					</article>
+				</li>
+			))
+		}
+	</ul>
+</tt-work-list>

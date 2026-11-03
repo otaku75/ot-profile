@@ -61,6 +61,7 @@ tt-header[scrolled]:not([overlay]) .tt-header__inner::before {
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1;
+  white-space: nowrap;
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -147,6 +148,7 @@ tt-header[menu-open] .tt-header__nav {
   font-family: var(--font-display);
   font-size: var(--font-size-2xl);
   font-weight: 600;
+  line-height: 1.3; /* 項目が増えても、背の低い画面でヘッダーの行に重ならないように詰める */
   letter-spacing: 0.08em;
   text-decoration: none;
   text-transform: uppercase;
@@ -172,14 +174,16 @@ tt-header[menu-open] .tt-header__nav {
     transition: none;
   }
 
+  /* 項目の間隔は画面幅に合わせて詰める（900px 前後でもロゴと1行に並ぶように） */
   .tt-header__nav-list {
     flex-direction: row;
-    gap: var(--space-6);
+    gap: clamp(var(--space-4), 4vw - 1.25rem, var(--space-6));
   }
 
   .tt-header__nav-list a {
     position: relative;
     font-size: var(--font-size-md);
+    line-height: var(--line-height-base);
     letter-spacing: 0.1em;
   }
 

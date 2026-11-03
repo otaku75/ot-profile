@@ -41,15 +41,21 @@ export async function getSponsors() {
 	return (await getFile("sponsor")).data;
 }
 
+/** つくったものと、IT のご相談の内容（content/works.yaml。書いた順） */
+export async function getWorks() {
+	return (await getFile("works")).data;
+}
+
 /**
  * 中身がまだなく「準備中」と表示するページ（src/data/site.ts の nav の id）。
  * そのページのファイルの一覧を空にする（お問い合わせはメールアドレスを空にする）と準備中になる
  */
 export async function getComingSoonPages() {
-	const [results, news, gallery, sponsors, site] = await Promise.all([
+	const [results, news, gallery, works, sponsors, site] = await Promise.all([
 		getResults(),
 		getNews(),
 		getGallery(),
+		getWorks(),
 		getSponsors(),
 		getSite(),
 	]);
@@ -57,6 +63,7 @@ export async function getComingSoonPages() {
 		results: results.length === 0,
 		news: news.length === 0,
 		gallery: gallery.photos.length === 0 && gallery.videos.length === 0,
+		works: works.works.length === 0 && works.services.length === 0,
 		sponsor: sponsors.length === 0,
 		contact: !site.contact_email,
 	};

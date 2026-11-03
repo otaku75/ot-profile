@@ -76,11 +76,3 @@ tt-sponsor-list {
 .tt-sponsor-list__body > :last-child:has(.button) {
   margin-top: var(--space-5);
 }
-
-/* 外部リンクの矢印（↗） */
-.tt-sponsor-list__external {
-  width: 0.7rem;
-  height: 0.7rem;
-  background-color: currentColor;
-  clip-path: polygon(30% 0, 100% 0, 100% 70%, 78% 48%, 22% 100%, 0 78%, 52% 22%);
-}

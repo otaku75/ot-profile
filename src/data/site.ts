@@ -16,7 +16,8 @@ export const nav: NavItem[] = [
 	{ id: "profile", label: "Profile", ja: "プロフィール", href: "/profile", description: "能力値・そうび・卓球歴" },
 	{ id: "results", label: "Results", ja: "戦績", href: "/results", description: "これまでの戦績" },
 	{ id: "gallery", label: "Gallery", ja: "ギャラリー", href: "/gallery", description: "試合や練習の写真・動画" },
+	{ id: "works", label: "Works", ja: "つくったもの", href: "/works", description: "つくったもの・IT のご相談" },
 	{ id: "news", label: "News", ja: "お知らせ", href: "/news", description: "お知らせ・試合予定" },
 	{ id: "sponsor", label: "Sponsor", ja: "スポンサー", href: "/sponsor", description: "活動を支えてくださっている企業" },
-	{ id: "contact", label: "Contact", ja: "お問い合わせ", href: "/contact", description: "取材・出演のご相談はこちら" },
+	{ id: "contact", label: "Contact", ja: "お問い合わせ", href: "/contact", description: "取材・出演・IT のご相談はこちら" },
 ];
