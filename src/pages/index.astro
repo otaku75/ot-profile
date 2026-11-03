@@ -4,23 +4,21 @@ import Hero from "../components/Hero.astro";
 import Menu from "../components/Menu.astro";
 import { nav } from "../data/site";
 import Base from "../layouts/Base.astro";
-import { formatDate, getComingSoonPages, getNews, getProfile, getResults, getSponsors } from "../lib/content";
+import { formatDate, getComingSoonPages, getNews, getProfile, getResults } from "../lib/content";
 
-const [profile, results, news, sponsors, comingSoon] = await Promise.all([
+const [profile, results, news, comingSoon] = await Promise.all([
 	getProfile(),
 	getResults(),
 	getNews(),
-	getSponsors(),
 	getComingSoonPages(),
 ]);
 
-// メニューの各項目に、最新の戦績・お知らせやスポンサー名をプレビューとして添える（空のものは説明文）
+// 戦績・お知らせのカードには、説明文の代わりに最新の1件を添える（ほかの項目と、まだ1件もないときは src/data/site.ts の説明文）
 const [latestResult] = results;
 const [latestNews] = news;
 const previews: Record<string, string | undefined> = {
 	results: latestResult && `最新: ${latestResult.title} ${latestResult.badge ?? ""}`.trim(),
 	news: latestNews && `${formatDate(latestNews.date)} ${latestNews.title}`,
-	sponsor: sponsors.map((sponsor) => sponsor.title).join("・"),
 };
 // 中身がまだないページは「Coming soon」の表示にする
 const items = nav.map((item) => ({

@@ -19,9 +19,6 @@ const [sponsors, comingSoon] = await Promise.all([getSponsors(), isComingSoon("s
 						<ComingSoon />
 					) : (
 						<>
-							<p class="measure">
-								活動を支えてくださっている企業・団体のみなさまです。いつも応援いただき、ありがとうございます。
-							</p>
 							<SponsorList sponsors={sponsors} />
 						</>
 					)

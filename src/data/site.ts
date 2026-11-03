@@ -8,7 +8,7 @@ export interface NavItem {
 	label: string;
 	ja: string;
 	href: string;
-	/** メニューに表示する説明（最新情報のプレビューがない項目に使う） */
+	/** トップのメニューのカードに表示する説明（戦績・お知らせのカードは、1件以上あれば代わりに最新の1件を表示する） */
 	description: string;
 }
 
@@ -16,8 +16,8 @@ export const nav: NavItem[] = [
 	{ id: "profile", label: "Profile", ja: "プロフィール", href: "/profile", description: "能力値・そうび・卓球歴" },
 	{ id: "results", label: "Results", ja: "戦績", href: "/results", description: "これまでの戦績" },
 	{ id: "gallery", label: "Gallery", ja: "ギャラリー", href: "/gallery", description: "試合や練習の写真・動画" },
-	{ id: "works", label: "Works", ja: "つくったもの", href: "/works", description: "つくったもの・IT のご相談" },
+	{ id: "works", label: "Works", ja: "つくったもの", href: "/works", description: "つくったものなどなど" },
 	{ id: "news", label: "News", ja: "お知らせ", href: "/news", description: "お知らせ・試合予定" },
-	{ id: "sponsor", label: "Sponsor", ja: "スポンサー", href: "/sponsor", description: "活動を支えてくださっている企業" },
-	{ id: "contact", label: "Contact", ja: "お問い合わせ", href: "/contact", description: "取材・出演・IT のご相談はこちら" },
+	{ id: "sponsor", label: "Sponsor", ja: "スポンサー", href: "/sponsor", description: "アンバサダーさせていただいている企業様" },
+	{ id: "contact", label: "Contact", ja: "お問い合わせ", href: "/contact", description: "お問い合わせはこちらから" },
 ];
