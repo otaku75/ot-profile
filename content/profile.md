@@ -4,7 +4,7 @@
 
 name_en: Hikaru Ota # 名前（英字）。トップの大きな名前・ヘッダー・フッターに出る
 name_ja: 太田 輝 # 名前（日本語）
-label: 一般プレーヤー # 肩書き
+label: Rallysアンバサダー # 肩書き
 
 # トップページの写真 / プロフィール写真
 # position … 切り抜いたときにどこを見せるか（横 縦。"50% 20%" なら中央・上寄り）
@@ -20,64 +20,72 @@ photo:
 # 基本情報（Status）。上から順に表示
 facts:
   - label: 所属
-    value: 〇〇〇〇
+    value: MISCH-MASCH
   - label: 生年月日
-    value: 〇〇〇〇年〇月〇日
+    value: 1999年7月5日
   - label: 出身地
-    value: 〇〇県
+    value: 長野県
   - label: 戦型
-    value: 〇〇〇〇
+    value: バック主戦型
 
 # 能力値（Ability）。value は 0〜10 の自己評価
 abilities:
-  - { label: サーブ, value: 7 }
-  - { label: レシーブ, value: 5 }
-  - { label: フォアハンド, value: 8 }
-  - { label: バックハンド, value: 6 }
-  - { label: フットワーク, value: 5 }
-  - { label: メンタル, value: 6 }
+  - { label: サーブ, value: 8 }
+  - { label: レシーブ, value: 6 }
+  - { label: フォアハンド, value: 1 }
+  - { label: バックハンド, value: 9 }
+  - { label: フットワーク, value: 6 }
+  - { label: メンタル, value: 5 }
+  - { label: ブロック, value: 7 }
+  - { label: ロビング, value: 8 }
 
 # そうび（使用用具）。上から順に表示
 #   slot … 種類 / maker・comment … なくてもよい
 #   image … 写真（なければラケットのアイコン）。例: image: { src: ./images/racket.jpg }
 equipment:
   - slot: ラケット
-    name: 〇〇〇〇
-    maker: 〇〇〇〇
-    comment: ここに使用感や選んだ理由などのコメントが入ります。
+    name: KOKI NIWA WOOD
+    maker: VICTAS
+    comment: 合板大好き。自分の特徴でもある球持ちは合板のおかげ。
   - slot: ラバー（フォア）
-    name: 〇〇〇〇
-    maker: 〇〇〇〇
-    comment: ここに使用感や選んだ理由などのコメントが入ります。
+    name: レッドモンキースピン
+    maker: Rallys
+    comment: 柔らかくブロックがしやすい。
   - slot: ラバー（バック）
-    name: 〇〇〇〇
-    maker: 〇〇〇〇
-    comment: ここに使用感や選んだ理由などのコメントが入ります。
+    name: ディグニクス05
+    maker: BUTTERFLY
+    comment: シートが強く回転がよくかかる。相手のボールに負けない。
 
 # 卓球歴（History）。古い順に自動で並ぶ
 #   date … 2014-08-20 / 2014-08 / 2014 のどれか / note … 補足（なくてもよい）
 #   highlight: true … 金色で強調する
 history:
-  - date: 2008-04
+  - date: 2008
     title: 卓球を始める
-    note: 〇〇クラブに入会
+    note: 地元のクラブチーム裾花卓研で始める
   - date: 2012
-    title: 〇〇中学校 卓球部に入部
-  - date: 2014-08
-    title: 〇〇大会に初出場
-    note: 一般シングルス
+    title: 愛工大名電中学校へ進学
+  - date: 2016-03
+    title: 愛工大名電中学を卒業
+  - date: 2016-04
+    title: 愛工大名電高校へ進学
   - date: 2018-04
-    title: 〇〇大学 卓球部に入部
-  - date: 2024-06
-    title: 〇〇クラブに所属
-  - date: 2026-08
-    title: 〇〇選手権大会で初優勝
-    note: 一般シングルス
+    title: 中央大学へ進学
+  - date: 2022-03
+    title: 中央大学卒業
+  - date: 2022-04
+    title: 一般企業へ就職
+    note: 東京で青嵐クラブに入る
+  - date: 2026-04
+    title: 大阪へ移動
+    note: 大阪でMISCH-MASCHに入る
     highlight: true
 ---
 
-ここに自己紹介文が入ります。卓球を始めたきっかけ、これまでの競技歴、プレースタイルの特徴などを紹介します。
+小学生から卓球を始め、様々な環境で様々な方々と出会い、素晴らしい経験をたくさんしてきました。
+社会人になってからも卓球は続けていて、Rallys のアンバサダーとしても活動しています。
 
-得意なプレーや試合で大切にしていること、練習で取り組んでいることなど、一歩踏み込んだ内容を書くと読み応えが出ます。
+自分の経験をたくさんの方にお伝えできる場所があればいいなと思い、自分のWebサイトを立ち上げてみました！
 
-応援してくれる方へのメッセージで締めくくると、人柄が伝わるプロフィールになります。
+（本業でIT関連の仕事もしていてもし需要があれば卓球業界でIT関連のご相談も受けられたらなと思ってます！）
+

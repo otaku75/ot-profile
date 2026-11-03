@@ -8,29 +8,80 @@
 #   badge     … 結果（例: 優勝、ベスト4。なくてもよい）
 #   highlight … true にすると金色で強調する
 
-- date: 2026-08-24
-  title: 〇〇選手権大会
-  note: 一般シングルス
+- date: 2024
+  title: 全日本クラブ選手権大会（岐阜）
+  note: 青嵐クラブ
+  badge: ベスト8
+
+- date: 2022
+  title: 全日本クラブ選手権大会（石川）
+  note: 青嵐クラブ
+  badge: ベスト8
+
+- date: 2021
+  title: 全日学
+  note: ダブルス
+  badge: ベスト16
+
+- date: 2017
+  title: インターハイ
+  note: 団体
   badge: 優勝
   highlight: true
 
-- date: 2026-05-03
-  title: 〇〇オープン
-  note: 一般シングルス
-  badge: ベスト4
-
-- date: 2025-11-16
-  title: 〇〇リーグ
+- date: 2017
+  title: 全国高校選抜
   note: 団体
-  badge: 準優勝
+  badge: 優勝
   highlight: true
 
-- date: 2025-06
-  title: 〇〇大会
+- date: 2016
+  title: インターハイ
+  note: 団体
+  badge: 優勝
+  highlight: true
+
+- date: 2016
+  title: 全国高校選抜
+  note: 団体
+  badge: 優勝
+  highlight: true
+
+- date: 2015
+  title: インターハイ
   note: ダブルス
   badge: ベスト8
 
-- date: 2024-09-22
-  title: 〇〇選手権大会
-  note: 一般シングルス
-  badge: ベスト16
+- date: 2014
+  title: 全中
+  note: 団体
+  badge: 優勝
+  highlight: true
+
+- date: 2014
+  title: 全国中学選抜
+  note: 団体
+  badge: 優勝
+  highlight: true
+
+- date: 2013
+  title: 全日本カデット
+  note: ダブルス
+  badge: ベスト8
+
+- date: 2013
+  title: 全中
+  note: 団体
+  badge: 優勝
+  highlight: true
+
+- date: 2013
+  title: 全国中学選抜
+  note: 団体
+  badge: 優勝
+  highlight: true
+
+- date: 2012
+  title: 全中
+  note: 団体
+  badge: 準優勝
