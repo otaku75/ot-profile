@@ -21,6 +21,39 @@ tt-menu {
   }
 }
 
+/* 項目数が列数で割り切れず、最後の行に1枚だけ残るときは、その1枚を横幅いっぱいに広げる */
+@media (min-width: 600px) {
+  .tt-menu__list > li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 900px) {
+  .tt-menu__list > li:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+
+  .tt-menu__list > li:last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* タイトル画面でメニューが並ぶように、ヒーローの名前が出たあとにカードを1枚ずつポンと出す。
+   --i は Menu.astro で付ける項目の番号。動きを減らす設定のときは最初から表示する */
+@media (prefers-reduced-motion: no-preference) {
+  .tt-menu__list > li {
+    animation: tt-menu-pop 0.45s var(--ease-pop) backwards;
+    animation-delay: calc(0.3s + var(--i, 0) * 60ms);
+  }
+}
+
+@keyframes tt-menu-pop {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.9);
+  }
+}
+
 /* カード全体がリンク。押すとボタンのように沈む */
 .tt-menu__card {
   display: flex;
@@ -54,12 +87,40 @@ tt-menu {
 }
 
 .tt-menu__label {
+  position: relative;
   font-family: var(--font-display);
   font-size: var(--font-size-xl);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+}
+
+/* 選んでいるカード（ホバー・フォーカス）には、ゲームの選択肢のように項目名の左で ▶ カーソルが揺れる。
+   カードの左の余白に置くので、出ても項目名の位置は動かない */
+.tt-menu__label::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 0.35rem);
+  width: 0.65rem;
+  height: 0.9rem;
+  background-color: var(--color-accent-text);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  opacity: 0;
+  translate: 0 -50%;
+  transition: opacity var(--duration-fast) var(--ease);
+}
+
+.tt-menu__card:is(:hover, :focus-visible) .tt-menu__label::before {
+  opacity: 1;
+  animation: tt-menu-cursor 0.8s var(--ease) infinite;
+}
+
+@keyframes tt-menu-cursor {
+  50% {
+    transform: translateX(-3px);
+  }
 }
 
 /* 丸いボタンの中に右向きの三角 */
